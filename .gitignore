@@ -1,0 +1,13 @@
+.DS_Store
+.idea/
+*.log
+*.iml
+yarn.lock
+package-lock.json
+node_modules/
+
+# Ignore optional external libraries
+
+# Track internal libraries & Ignore unused verdors files
+
+
