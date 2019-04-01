@@ -1,13 +1,7 @@
 .DS_Store
-.idea/
+Thumbs.db
+db.json
 *.log
-*.iml
-yarn.lock
-package-lock.json
 node_modules/
-
-# Ignore optional external libraries
-
-# Track internal libraries & Ignore unused verdors files
-
-
+public/
+.deploy*/
