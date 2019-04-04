@@ -49,7 +49,7 @@ rss:
 
 footer:
   # Specify the date when the site was setup. If not defined, current year will be used.
-  #since: 2015
+  since: 2019
 
   # Icon between year and copyright info.
   icon:
@@ -71,6 +71,7 @@ footer:
     version: true
 
   theme:
+    powered: "thdqn个人博客"
     # Theme & scheme info link (Theme - NexT.scheme).
     enable: true
     # Version info of NexT after scheme info (vX.X.X).
@@ -198,7 +199,7 @@ site_state: true
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  #GitHub: https://github.com/yourname || github
+  GitHub: https://github.com/yexiang1994 || github
   #E-Mail: mailto:yourname@gmail.com || envelope
   #Weibo: https://weibo.com/yourname || weibo
   #Google: https://plus.google.com/yourname || google
@@ -217,11 +218,12 @@ social_icons:
 
 # Blog rolls
 links_icon: link
-links_title: Links
-links_layout: block
-#links_layout: inline
+links_title: 友情链接
+links_layout: inline
+#links_layout: block
 links:
-  #Title: http://example.com
+  老牛的博客: http://www.web-jackiee.com/
+  轩陌的博客: https://www.xuanmo.xin/
 
 # Sidebar Avatar
 avatar:
@@ -312,7 +314,7 @@ excerpt_description: true
 # Automatically Excerpt (Not recommend).
 # Use <!-- more --> in the post to control excerpt accurately.
 auto_excerpt:
-  enable: false
+  enable: true
   length: 150
 
 # Read more button
@@ -413,7 +415,7 @@ custom_logo:
 # Code Highlight theme
 # Available values: normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: normal
+highlight_theme: night
 
 # Enable "cheers" for archive page.
 cheers: true
@@ -804,8 +806,8 @@ rating:
 # You can visit https://leancloud.cn to get AppID and AppKey.
 leancloud_visitors:
   enable: false
-  app_id: #<app_id>
-  app_key: #<app_key>
+  app_id: lx9Vg43o96ULy0KS6EwFqWtg-gzGzoHsz
+  app_key: 0eTrqiRlfzSsanW81msWDCmp
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
   # If you don't care about security in leancloud counter and just want to use it directly
   # (without hexo-leancloud-counter-security plugin), set `security` to `false`.
@@ -832,12 +834,20 @@ busuanzi_count:
   total_views_icon: eye
   post_views: true
   post_views_icon: eye
-
+  site_uv: true
+  site_uv_header: <i class="fa fa-user"></i> 访问人数
+  site_uv_footer: 人
+  site_pv: true
+  site_pv_header: <i class="fa fa-eye"></i> 总访问量
+  site_pv_footer: 次
+  page_pv: true
+  page_pv_header: <i class="fa fa-file-o"></i> 阅读数
+  page_pv_footer:
 # Tencent analytics ID
 #tencent_analytics:
 
 # Tencent MTA ID
-#tencent_mta:
+# tencent_mta:
 
 
 # ---------------------------------------------------------------
@@ -1172,7 +1182,7 @@ vendors:
   # Example:
   # leancloud: //cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js
   leancloud:
-
+   
   # valine
   # See: https://github.com/xCss/Valine
   # Example:
