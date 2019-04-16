@@ -3,8 +3,7 @@ title: react-native报错锦集
 tags: [react-native]
 ---
 
-写了半年的rn项目了，有些问题一直很头疼。头疼的主要原因不在于他的用法有多难，而是大
-    部分在他的报错，让人不知所措，我也一直在积累这些报错信息，来总结其中的规律。下面是一些问题的分类：
+下面是一些rn问题的分类：
 > 1.rn的版本问题，如0.55.6版本就是这样的，安装的时候就会报错，
 > 2.link组件的问题，有些时候会发生自动link不全或者路径错误的情况，
 > 3.安卓版本问题，组件的版本和rn项目版本统一
@@ -152,3 +151,39 @@ Could not find method implementation() for arguments[com.facebook.react:react-na
 14. 高版本手机请求不到数据，因为高版本8.0以上手机默认支持https请求，
 **解决办法：** 在AndroidManifest.xml文件里面添加android:usesCleartextTraffic="true"
 
+------
+
+15. ./gradlew assembleRelease的时候的错误
+* What went wrong:
+Execution failed for task ':app:generateReleaseBuildConfig'.
+> java.nio.file.DirectoryNotEmptyException: D:\work\2018\08-03\water\App\apps\android\app\build\generated\source\buildConfig\release\com
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+BUILD FAILED in 2s
+11 actionable tasks: 1 executed, 10 up-to-date
+
+要重新清理下文件， ./gradlew clean
+
+------
+
+16. 调用的百度地图一直是网格状，显示不出来
+这里需要注意这几个点
+* 1：调试的时候只能用 debug.keystore,
+* 2：正式打包需要用 在./android 目录下的（一般是在c盘的appdada里面）生成的keystore才行，而不是在java sdk目录下生成的keystore，这两个有区别。
+
+------
+
+17. A problem occurred evaluating project ':react-native-file-selector'.
+> Could not find method google() for arguments [] on repository container.
+
+解决办法： gradle-wrapper.properties  里面的distributionUrl = https\://services.gradle.org/distributions/gradle-4.1-all.zip
+
+------
+
+18. A problem occurred configuring project ':app'.
+> Could not resolve all dependencies for configuration ':app:_debugApk'.
+   > A problem occurred configuring project ':react-native-file-selector'.
+      > Failed to notify project evaluation listener.
+         > com.android.build.gradle.tasks.factory.AndroidJavaCompile.setDependencyCacheDir(Ljava/io/File;)V
