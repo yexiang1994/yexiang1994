@@ -182,8 +182,15 @@ BUILD FAILED in 2s
 
 ------
 
-18. A problem occurred configuring project ':app'.
-> Could not resolve all dependencies for configuration ':app:_debugApk'.
-   > A problem occurred configuring project ':react-native-file-selector'.
-      > Failed to notify project evaluation listener.
-         > com.android.build.gradle.tasks.factory.AndroidJavaCompile.setDependencyCacheDir(Ljava/io/File;)V
+18. Execution failed for task ':app:preDebugBuild'.
+> Android dependency 'com.android.support:support-fragment' has different version for the compile (26.1.0) and runtime (27.1.1) classpath. You should manually set the same version via DependencyResolution
+
+解决办法： 我所用的没有support-fragment这个依赖，所以应该是build冲突，清除build文件，./gradlew clean后就好了
+
+------
+
+19. > Task :react-native-fast-image:compileDebugJavaWithJavac
+注: [2] Wrote GeneratedAppGlideModule with: [com.bumptech.glide.integration.okhttp3.OkHttpLibraryGlideModule, com.dylanvann.fastimage.FastImageOkHttpProgressGlideModule]
+
+解决办法删了他吧react-native-fast-image ，换个版本吧，最新版本有问题啊，我之前用的5.1.0
+

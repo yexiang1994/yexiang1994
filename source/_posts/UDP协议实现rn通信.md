@@ -43,6 +43,7 @@ public void receive(){
             // 创建DatagramSocket，绑定8085端口,
             receiveSocket = new DatagramSocket(8085);
         }
+        // 预留1024字节缓冲区
         byte[] bytes = new byte[1024];
         datagramPacket= new DatagramPacket(bytes, 0, bytes.length);
         // 启用新线程监听receive方法，因为receiveSocket.receive() 方法会阻塞线程，
@@ -57,12 +58,14 @@ public void receive(){
 class NewThread extends Thread{
         @Override
         public void run() {
-            for(int i = 0 ; i < Integer.MAX_VALUE ; i++) {
+            // 因为 receiveSocket.receive是阻塞方法，只有接收到数据后，才会执行下一个for循环内容，
+            // 这里可以随便给个最大值，比如100000
+            for(int i = 0 ; i < 100000 ; i++) {
                 try {
                     receiveSocket.receive(datagramPacket);
                     // 获取接收到的数据（为string类型），然后去掉前后的空格
                     String msg = new String(datagramPacket.getData()).trim();
-                    把数据组合成 jsonobject
+                    // 把数据组合成 jsonobject
                     JSONObject msgObj = new JSONObject();
                     try{
                         msgObj.put("msgs", msg);
@@ -321,5 +324,38 @@ press() {
 }
 ```
 
+## 缓存问题
+在实现发送信息的时候会出现，当下次接收到的数据字（a长度）节小于前一次的（b长度）的时候，接收到的信息只会更新前a个数据，b-a后面的数据依然存在，比如第一次发送abc，第二次发送12，这时接收到的数据就是12c而不是我们想要的12。 这时因为udp存在缓存问题，所以要清空缓存。
+### 清空缓存方法
+方法：在取出数据后，执行如下方法
+```java
+// 上面的这个创建缓存区的方法可以提取出来
+byte[] bytes = new byte[1024];
+// 然后在
+Arrays.fill(bytes,(byte)0);
+```
+然后就清空了缓存区域
 
+## 广播问题
+需要先了解下ip和子网掩码二进制转化：
+IP地址是一个32位的二进制数，通常被分割为4个“8位二进制数”（也就是4个字节）。IP地址通常用“点分十进制”表示成（a.b.c.d）的形式，其中，a,b,c,d都是0~255之间的十进制整数。例：点分十进IP地址（100.4.5.6），实际上是32位二进制数（01100100.00000100.00000101.00000110）
+
+假如计算机的IP位址是192.15.156.205，子网掩码是255.255.255.224，
+先把子网掩码255.255.255.224做 NOT 运算﹐可以得出﹕
+00000000.00000000.00000000.00011111 
+然后再和IP做一次 OR 运算﹐就可以得到 Broadcast Address: 
+11000000.00001111.10011100.11001101 OR 00000000.00000000.00000000.00011111 
+(192.15.156.205 OR 255.255.255.224) 
+得出﹕ 11000000.00001111.10011100.11011111
+(192.15.156.223) 
+192.15.156.223就是那个子网的广播地址了. 知道广播地址后就可以以这个地址来发送消息了，局域网的都可以接收到了。
+
+当网络间进行通信时，如需确定是否在同一网络，则用某台主机的网络号与另一台主机的子网掩码进行与运算，观察网络号与与运算的结果是否相同。
+其中还有了解下子网掩码，不然还是不知所以,[子网掩码](https://baike.baidu.com/item/%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81/100207?fr=aladdin)
+
+[参考地址](https://blog.csdn.net/Evan_love/article/details/79981574)
+[参考地址](https://blog.csdn.net/fwt336/article/details/76538321)
+
+## 为何不能跨域广播
+因为中国网络十分复杂，一层套一层，端口，ip随时会变化。比如你所在的公司有个局域网，
 
