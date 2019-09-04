@@ -64,12 +64,12 @@ dependencies {
 
 接下来就说下其他的报错案例
 
-1. **Execution failed for task ':app:installDebug'.com.android.builder.testing.api.DeviceException: com.android.ddmlib.InstallException: device '860BDMP22B63' not found**
+1. Execution failed for task ':app:installDebug'.com.android.builder.testing.api.DeviceException: com.android.ddmlib.InstallException: device '860BDMP22B63' not found
 **解决方法：** adb reverse tcp:8081 tcp:8081  关闭usb调试再重新打开
 
 ------
 
-2. **初始化运行红屏错误 unable to load script from asset/index.android.bundle**
+2. 初始化运行红屏错误 unable to load script from asset/index.android.bundle
 assets中没有成功打包出index.android.bundle文件
 **解决方法:** 1.去（你的项目文件夹）\android\app\src\main目录下新建asset文件夹
 　　　　　2.终端下运行
@@ -81,12 +81,12 @@ assets中没有成功打包出index.android.bundle文件
 
 ------
 
-3. **the development server trturned response error code:500**
+3. the development server trturned response error code:500
 **解决方法：** 删除node包重新install，要用npm不能用cnpm
 
 ------
 
-4.**bundlin failed: error:unable to resolve module  'AccessibilityInfo' form '...node_modules/...react-native-implementation.js':Module' AccessibilityInfo does not exist in the Hast..**
+4. bundlin failed: error:unable to resolve module  'AccessibilityInfo' form '...node_modules/...react-native-implementation.js':Module' AccessibilityInfo does not exist in the Hast..
 **解决方法：** 这个是0.56的版本问题，换成0.55.4版本就行了
 
 ------
@@ -95,12 +95,12 @@ assets中没有成功打包出index.android.bundle文件
 
 ------
 
-6. **使用AsyncStorage  debug不出来数据，也就是本地存储失效了，需要取消debug模式，这和react-native运行模式有关**
+6. 使用AsyncStorage  debug不出来数据，也就是本地存储失效了，需要取消debug模式，这和react-native运行模式有关
 
 ------
 
-7. **Error(1,0) Your project path contains non-ASCII characters,This will most likely cause the
-    build to fail on Windows,**
+7. Error(1,0) Your project path contains non-ASCII characters,This will most likely cause the
+    build to fail on Windows,
 **解决方法：** 项目不能有中文路径
 
 ------
@@ -110,12 +110,12 @@ assets中没有成功打包出index.android.bundle文件
 
 ------
 
-9. **com.android.builder.testing.api.DeviceException:com.android.ddmlib.InstallException:Failed to finalize pession:INSTALL_FAILED_UPDATE_INCOMPATIBLE: Package com.app signatures do not match the prevously installed version:ignoring!**
+9. com.android.builder.testing.api.DeviceException:com.android.ddmlib.InstallException:Failed to finalize pession:INSTALL_FAILED_UPDATE_INCOMPATIBLE: Package com.app signatures do not match the prevously installed version:ignoring!
 **解决方法：** 创建项目名的时候不能重名，就算之前删除了，除非彻底关闭所有的相关运行程序，还有一中情况是安装了打包后的app没有卸载，在运行项目就不行
 
 ------
 
-10. **react-native-baidu-map插件用法**
+10. react-native-baidu-map插件用法
 下载后， 高级版本不支持从 react中直接引入proptype需要改成
 ```js
 import PropTypes from 'prop-types';
@@ -124,7 +124,7 @@ import PropTypes from 'prop-types';
 
 ------
 
-11. **重要一点，开发时候需要用到安卓的debug.keystore的密钥库的SHA1密码来生成百度地图的key，不然测试的百度地图一直时网格状,**
+11. 重要一点，开发时候需要用到安卓的debug.keystore的密钥库的SHA1密码来生成百度地图的key，不然测试的百度地图一直时网格状,
 
 项目的包名必须与key申请的包名一致
 注意，只有在 **.android** 目录下生产的秘钥签名才是百度地图生产key所需要的秘钥
@@ -138,25 +138,25 @@ https://github.com/react-native-community/react-native-camera/issues/1530
 
 ------
 
-12. **a problem occourred evaluating project: 'react-native-fast-image'
-Could not find method implementation() for arguments[com.facebook.react:react-native:+]**
+12. a problem occourred evaluating project: 'react-native-fast-image'
+Could not find method implementation() for arguments[com.facebook.react:react-native:+]
 **解决办法：** 把node_module下的fast-image里面的compile修改成implementation，高版本的gradle语法变了，
 
 ------
 
-13. **低版本rn有长屏幕手机撑不开的问题**，需要加
+13. 低版本rn有长屏幕手机撑不开的问题，需要加
 ```html
 <meta-data android:name="android.max_aspect" android:value="2.2"/>
 ```
 
 ------
 
-14. **高版本手机请求不到数据，因为高版本8.0以上手机默认支持https请求，**
+14. 高版本手机请求不到数据，因为高版本8.0以上手机默认支持https请求，
 **解决办法：** 在AndroidManifest.xml文件里面添加android:usesCleartextTraffic="true"
 
 ------
 
-15. **./gradlew assembleRelease的时候的错误
+15. ./gradlew assembleRelease的时候的错误
 * What went wrong:
 Execution failed for task ':app:generateReleaseBuildConfig'.
 > java.nio.file.DirectoryNotEmptyException: D:\work\2018\08-03\water\App\apps\android\app\build\generated\source\buildConfig\release\com
@@ -165,7 +165,7 @@ Execution failed for task ':app:generateReleaseBuildConfig'.
 Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
 
 BUILD FAILED in 2s
-11 actionable tasks: 1 executed, 10 up-to-date**
+11 actionable tasks: 1 executed, 10 up-to-date
 
 要重新清理下文件， ./gradlew clean
 
@@ -178,33 +178,33 @@ BUILD FAILED in 2s
 
 ------
 
-17. **A problem occurred evaluating project ':react-native-file-selector'.
-> Could not find method google() for arguments [] on repository container.**
+17. A problem occurred evaluating project ':react-native-file-selector'.
+> Could not find method google() for arguments [] on repository container.
 
 解决办法： gradle-wrapper.properties  里面的distributionUrl = https\://services.gradle.org/distributions/gradle-4.1-all.zip
 
 ------
 
-18. **Execution failed for task ':app:preDebugBuild'.
-> Android dependency 'com.android.support:support-fragment' has different version for the compile (26.1.0) and runtime (27.1.1) classpath. You should manually set the same version via DependencyResolution**
+18. Execution failed for task ':app:preDebugBuild'.
+> Android dependency 'com.android.support:support-fragment' has different version for the compile (26.1.0) and runtime (27.1.1) classpath. You should manually set the same version via DependencyResolution
 
 解决办法： 我所用的没有support-fragment这个依赖，所以应该是build冲突，清除build文件，./gradlew clean后就好了
 
 ------
 
-19. **> Task :react-native-fast-image:compileDebugJavaWithJavac
-注: [2] Wrote GeneratedAppGlideModule with: [com.bumptech.glide.integration.okhttp3.OkHttpLibraryGlideModule, com.dylanvann.fastimage.FastImageOkHttpProgressGlideModule]**
+19. > Task :react-native-fast-image:compileDebugJavaWithJavac
+注: [2] Wrote GeneratedAppGlideModule with: [com.bumptech.glide.integration.okhttp3.OkHttpLibraryGlideModule, com.dylanvann.fastimage.FastImageOkHttpProgressGlideModule]
 
 解决办法删了他吧react-native-fast-image ，换个版本吧，最新版本有问题啊，我之前用的5.1.0
 
 ------
 
-20. **打包的时候可能出现的问题 node_modules_reactnavigation_src_views_assets_backicon.png, but the error uncompiled PNG file passed as argument. Must be compiled first into .flat file.. error: failed parsing overlays.**
+20. 打包的时候可能出现的问题 node_modules_reactnavigation_src_views_assets_backicon.png, but the error uncompiled PNG file passed as argument. Must be compiled first into .flat file.. error: failed parsing overlays.
 在gradle.properties文件中添加以下行：android.enableAapt2 = false，让他使用旧的aapt方式来获取资源打包，虽然不推荐，我用的是0.57.0的版本，一开始打包是没有这个问题的，不知道后面改了android哪里的资源导致的，因为改的东西太多了，没办法。我建议还是升级下app版本，把项目移植过去，以免后面继续出现其他问题。
 
 ------
 
-21. **Exception in thread "main" javax.net.ssl.SSLException: Connection has been shutdown: javax.net.ssl.SSLException: SSL peer shut down incorrectly**
+21. Exception in thread "main" javax.net.ssl.SSLException: Connection has been shutdown: javax.net.ssl.SSLException: SSL peer shut down incorrectly
 
 网的问题，下载不到distributionUrl=https\://services.gradle.org/distributions/gradle-4.10.2-all.zip文件，可以陪下镜像阿里云
 ```groovy
@@ -233,12 +233,12 @@ allprojects {
 
 ------
 
-22. **Error: Unable to resolve module `./index` from `\node_modules\react-native\scripts/.`: The module `./index` could not be found from `\node_modules\react-native\scripts/.`. Indeed, none of these files exist:**
+22. Error: Unable to resolve module `./index` from `\node_modules\react-native\scripts/.`: The module `./index` could not be found from `\node_modules\react-native\scripts/.`. Indeed, none of these files exist:
 解决方法： 这个是用了0.59.0-0.59.2版本的问题，换成0.59.4就可以了
 
 ------
 
-23. **Error: null, Cannot fit requested classes in a single dex file (# methods: 71853 > 65536)**
+23. Error: null, Cannot fit requested classes in a single dex file (# methods: 71853 > 65536)
 这个是由于android 的64K 引用限制，具体参照[原文](https://developer.android.com/studio/build/multidex)
 在gradle里面添加multiDexEnabled true 就行了
 ```java
@@ -261,7 +261,7 @@ dependencies {
 
 ------
 
-24. **android 底版本沉浸栏不起效**
+24. android 底版本沉浸栏不起效，
 解决办法：  正常安装rn官网的沉浸栏设置，高版本是可以实现沉浸栏的，但是我的测试手机4.4版本不行，沉浸栏还是原来的，需要在 android/app/src/main/res/styles.xml 里面的
 ```xml
 <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -272,10 +272,10 @@ dependencies {
 ```
 ------
 
-25. **Execution failed for task ':app:transformDexArchiveWithExternalLibsDexMergerForDebug'.
+25. Execution failed for task ':app:transformDexArchiveWithExternalLibsDexMergerForDebug'.
 > com.android.builder.dexing.DexArchiveMergerException: Error while merging dex archives:
 The number of method references in a .dex file cannot exceed 64K.
-Learn how to resolve this issue at https://developer.android.com/tools/building/multidex.html**
+Learn how to resolve this issue at https://developer.android.com/tools/building/multidex.html
 
 这个问题是android引用第三方库方法超过了64k大小的限制，
 解决办法： 在build.gradle的 defaultConfig里面添加 **multiDexEnabled true** 设置下就行了，
@@ -283,8 +283,8 @@ Learn how to resolve this issue at https://developer.android.com/tools/building/
 
 ------
 
-26. **Process: com.socket0594, PID: 27759
-java.lang.RuntimeException: Unable to get provider android.support.v4.content.FileProvider: java.lang.ClassNotFoundException: Didn't find class "android.support.v4.content.FileProvider" on path: DexPathList[[zip file "/mnt/asec/com.socket0594-2/pkg.apk"],nativeLibraryDirectories=[/mnt/asec/com.socket0594-2/lib, /vendor/lib, /system/lib, /data/datalib]]**
+26. Process: com.socket0594, PID: 27759
+java.lang.RuntimeException: Unable to get provider android.support.v4.content.FileProvider: java.lang.ClassNotFoundException: Didn't find class "android.support.v4.content.FileProvider" on path: DexPathList[[zip file "/mnt/asec/com.socket0594-2/pkg.apk"],nativeLibraryDirectories=[/mnt/asec/com.socket0594-2/lib, /vendor/lib, /system/lib, /data/datalib]]
 这里需要android的support.v4 库来做兼容，support.v4库一般rn都引入了没有引入的这样引入下
 ```groovy
 // \android\app\build.gradle
@@ -304,7 +304,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
 ```
 ------
 
-27.**rn使用StatusBar无效，正常来说不会无效的，我按照其他的的方法设置了**
+27. rn使用StatusBar无效，正常来说不会无效的，我按照其他的的方法设置了
 ```xml
 //在 android\app\src\main\res\values\styles.xml 里面
 <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -313,7 +313,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
 ```
 这个的意思其实是设置沉浸栏的状态，是否是半透明的，设置了这个windowTranslucentStatus就会导致StatusBar无效，网上的其他人的方法谨慎参考啊
 
-28. **安装react-native-image-crop-picker 插件的时候Could not find com.github.yalantis:ucrop:2.2.1-native，因为缺少maven源，** 
+28. 安装react-native-image-crop-picker 插件的时候Could not find com.github.yalantis:ucrop:2.2.1-native，因为缺少maven源， 
 解决方法：/android/build.gradle 下
 ```groovy
 allprojects {
@@ -336,56 +336,18 @@ allprojects {
 }
 ```
 ------
-29 **skipping devices 'hc70' for 'app"debug'  :unkonwn api level**
-可以先撤销usb调试，在重新连接usb，
-还不行需要把允许未知的app应用安装开启，还有usb应用安装功能打开
 
-------
-30. **could not read path "xx\xx\app\build\intermdiate\xx\xxx"**
-如果无法读取app\build里面的文件，是build的时候出现了冲突，需要进入android文件夹下面清除下build文件 
-gradle clean 或者 ./gradlew clean
+29. 安装最新版的react-native-baidu-map时候出现的问题
+InnerClass annotations are missing corresponding EnclosingMember annotations. Such InnerClass annotations are ignored.
+Message{kind=WARNING, text=InnerClass annotations are missing corresponding EnclosingMember annotations. Such InnerClass annotations are ignored., sources=[Unknown source file], tool name=Optional.of(D8)}
 
-------
-
-31. **skipping device '' for 'app:debug': could not find build of variant which supports density -1 and an abi in** 
-这个问题在网上没有找到解决方法，然后我就跑了原生run了一次，原生出现了问题  **device supports ，but apk only supports x86**， 这里是因为为了减小打包体积我设置了下so库架构
-```gradle
-defaultConfig{
-  ndk{ "x86","armeabi-v7a"}
-}
-```
-可以查一下手机的cpu型号，然后根据型号选择ndk库，或者这里取消限制，注释掉， 
-这里改好后就在as上面起来了，然后又去react-native run-android就没有一开始的错误了。
-关于so库的文章可以看这篇
-[so库详情](https://zhuanlan.zhihu.com/p/21302804)
-
-------
-32 ** 关于阿里源的配置**
-很多时候我们会遇到下载不下来jar包的情况，这时候要看清是哪个jar包下不下来，
-比如这个报错  could not get 'https://jcenter.bintray.com/org/apache/...';
-这个 jcenter 是国外的地址下载不到，可以配置下阿里源对应的maven 的jcenter仓库
-```gradle
-buildscript {
-    repositories {
-        maven {
-            url "https://maven.aliyun.com/repository/jcenter"
-        }
-        google()
-        jcenter()
-    }
-}
-
-allprojects {
-    repositories {
-        maven {
-            url "https://maven.aliyun.com/repository/jcenter"
-        }
-        google()
-        jcenter()
+在app.gradle里面添加
+```groovy
+android{
+    ...
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 ```
-其他源同理
-[阿里源maven仓库地址](https://maven.aliyun.com/mvn/view)
-
-[个人博客地址](http://thdqn.cn) 
