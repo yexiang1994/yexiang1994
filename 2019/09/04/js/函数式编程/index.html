@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="我觉得学习函数式编程以案例来学习是最快的方法，我看了很多讲解还是实操起来学的快，推荐函数式编程指南这本书，同时还要看ramda，我是一开始用的ramda这个工具，这个工具让函数式写起来更方便。因为这本书中运用到了ramda，所有我觉得有必要两个同时看，看完书前几张基本概念的理解后，等看到到案例了再去看ramda，这样学起来就快了。如果网上找不到书的可以问我要。demo大都是以react为案例来写的">
+<meta name="keywords" content="js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数式编程">
+<meta property="og:url" content="http://thdqn.cn/2019/09/04/js/函数式编程/index.html">
+<meta property="og:site_name" content="thdqn">
+<meta property="og:description" content="我觉得学习函数式编程以案例来学习是最快的方法，我看了很多讲解还是实操起来学的快，推荐函数式编程指南这本书，同时还要看ramda，我是一开始用的ramda这个工具，这个工具让函数式写起来更方便。因为这本书中运用到了ramda，所有我觉得有必要两个同时看，看完书前几张基本概念的理解后，等看到到案例了再去看ramda，这样学起来就快了。如果网上找不到书的可以问我要。demo大都是以react为案例来写的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-10T03:19:14.349Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="函数式编程">
+<meta name="twitter:description" content="我觉得学习函数式编程以案例来学习是最快的方法，我看了很多讲解还是实操起来学的快，推荐函数式编程指南这本书，同时还要看ramda，我是一开始用的ramda这个工具，这个工具让函数式写起来更方便。因为这本书中运用到了ramda，所有我觉得有必要两个同时看，看完书前几张基本概念的理解后，等看到到案例了再去看ramda，这样学起来就快了。如果网上找不到书的可以问我要。demo大都是以react为案例来写的">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://thdqn.cn/2019/09/04/js/函数式编程/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>函数式编程 | thdqn</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thdqn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">thdqn技术博客</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://thdqn.cn/2019/09/04/js/函数式编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thdqn">
+      <meta itemprop="description" content="thdqn的博客,个人技术笔记">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thdqn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">函数式编程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 14:37:56" itemprop="dateCreated datePublished" datetime="2019-09-04T14:37:56+08:00">2019-09-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-10 11:19:14" itemprop="dateModified" datetime="2019-07-10T11:19:14+08:00">2019-07-10</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我觉得学习函数式编程以案例来学习是最快的方法，我看了很多讲解还是实操起来学的快，推荐<strong>函数式编程指南</strong>这本书，同时还要看ramda，我是一开始用的ramda这个工具，这个工具让函数式写起来更方便。因为这本书中运用到了ramda，所有我觉得有必要两个同时看，看完书前几张基本概念的理解后，等看到到案例了再去看ramda，这样学起来就快了。如果网上找不到书的可以问我要。<br>demo大都是以react为案例来写的</p>
+<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><p>我的理解:有了这个容器，每次执行函数一次就把值又放到容器里面了，再次操作再次取值再次放入进去，十分方便，<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Container就是这个容器</span></span><br><span class="line"><span class="keyword">var</span> Container = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.__value = x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Container.of = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>) </span>&#123; <span class="keyword">return</span> <span class="keyword">new</span> Container(x); &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加了map后就是另外一种形式了叫做functor，</span></span><br><span class="line"><span class="comment">// functor 是实现了 map 函数并遵守一些特定规则的容器类型</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// map传入函数，执行完用of再次把值放入容器里面，</span></span><br><span class="line">Container.prototype.map = <span class="function"><span class="keyword">function</span>(<span class="params">f</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Container.of(f(<span class="keyword">this</span>.__value))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里就展示了两次在map里面执行返回数值到容器里面</span></span><br><span class="line">Container.of(<span class="string">"bos"</span>).map(concat(<span class="string">"waw"</span>)).map(R.prop(<span class="string">"length"</span>));</span><br><span class="line"><span class="comment">// 结果 &#123;__value: 6&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>这里如果看不懂可以这样理解<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这是一次map</span></span><br><span class="line">Container.of(<span class="string">"bos"</span>).map(concat(<span class="string">"waw"</span>))</span><br><span class="line"><span class="comment">// 这里执行map后 相当于变成了</span></span><br><span class="line"><span class="keyword">var</span> a = concat(<span class="string">"waw"</span>)(<span class="string">"bos"</span>);</span><br><span class="line">Container.of(a);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这是两次map</span></span><br><span class="line">Container.of(<span class="string">"bos"</span>).map(concat(<span class="string">"waw"</span>)).map(R.prop(<span class="string">"length"</span>));</span><br><span class="line"><span class="comment">// 这里变成了</span></span><br><span class="line"><span class="keyword">var</span> a = concat(<span class="string">"waw"</span>)(<span class="string">"bos"</span>);  <span class="comment">// 合并的字符串</span></span><br><span class="line"><span class="comment">// R是ramda语法</span></span><br><span class="line"><span class="keyword">var</span> len = R.prop(<span class="string">"length"</span>)(<span class="string">"wawbos"</span>)  <span class="comment">// wawbos的length 是=&gt;6;</span></span><br><span class="line">Container.of(len);</span><br><span class="line"><span class="comment">// &#123;__value: 6&#125;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h3><p>这个是在容器里面添加了空值判断，Maybe 会先检查自己的值是否为空，然后才调用传进来的函数。这样我们在使用 map 的时候就能避免的空值了的麻烦了<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Maybe = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.__value = x;</span><br><span class="line">&#125;</span><br><span class="line">Maybe.of = <span class="function">(<span class="params">x</span>) =&gt;</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Maybe(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Maybe.prototype.isNothing = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">this</span>.__value === <span class="literal">null</span> || <span class="keyword">this</span>.__value === <span class="literal">undefined</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Maybe.prototype.map = <span class="function"><span class="keyword">function</span>(<span class="params">f</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.isNothing() ? Maybe.of(<span class="literal">null</span>) : Maybe.of(f(<span class="keyword">this</span>.__value))</span><br><span class="line">&#125;</span><br><span class="line">Maybe.of(<span class="string">"absck kbas"</span>).map(match(<span class="regexp">/a/ig</span>)); <span class="comment">// =&gt; &#123;"__value": ["a", "a"]&#125;</span></span><br><span class="line">Maybe.of(<span class="literal">null</span>).map(match(<span class="regexp">/a/ig</span>)); <span class="comment">// =&gt; &#123;"__value": null&#125;</span></span><br><span class="line">Maybe.of(&#123;<span class="attr">name</span>: <span class="string">"brois"</span>&#125;).map(R.prop(<span class="string">"age"</span>)).map(add(<span class="number">10</span>)); <span class="comment">// =&gt; &#123;"__value": null&#125;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a>纯函数</h3><p>纯函数是一种相同的输入，永远会得到相同的输出，而且没有任何可观察的副作用<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xs = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 纯的</span></span><br><span class="line">xs.slice(<span class="number">0</span>,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//=&gt; [1,2,3]</span></span><br><span class="line"></span><br><span class="line">xs.slice(<span class="number">0</span>,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//=&gt; [1,2,3]</span></span><br><span class="line"></span><br><span class="line">xs.slice(<span class="number">0</span>,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//=&gt; [1,2,3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不纯的</span></span><br><span class="line">xs.splice(<span class="number">0</span>,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//=&gt; [1,2,3]</span></span><br><span class="line"></span><br><span class="line">xs.splice(<span class="number">0</span>,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//=&gt; [4,5]</span></span><br><span class="line"></span><br><span class="line">xs.splice(<span class="number">0</span>,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//=&gt; []</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ----------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不纯的</span></span><br><span class="line"><span class="keyword">var</span> minimum = <span class="number">21</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> checkAge = <span class="function"><span class="keyword">function</span>(<span class="params">age</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> age &gt;= minimum;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 纯的</span></span><br><span class="line"><span class="keyword">var</span> checkAge = <span class="function"><span class="keyword">function</span>(<span class="params">age</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> minimum = <span class="number">21</span>;</span><br><span class="line">  <span class="keyword">return</span> age &gt;= minimum;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这种可以理解为不改变外部变量，或者不受外部变量而影响，</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ---------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不纯的</span></span><br><span class="line"><span class="keyword">var</span> signUp = <span class="function"><span class="keyword">function</span>(<span class="params">attrs</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> user = saveUser(attrs);</span><br><span class="line">  welcomeUser(user);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> saveUser = <span class="function"><span class="keyword">function</span>(<span class="params">attrs</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> user = Db.save(attrs);</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> welcomeUser = <span class="function"><span class="keyword">function</span>(<span class="params">user</span>) </span>&#123;</span><br><span class="line">    Email(user, ...);</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 纯的</span></span><br><span class="line"><span class="keyword">var</span> signUp = <span class="function"><span class="keyword">function</span>(<span class="params">Db, Email, attrs</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> user = saveUser(Db, attrs);</span><br><span class="line">    welcomeUser(Email, user);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> saveUser = <span class="function"><span class="keyword">function</span>(<span class="params">Db, attrs</span>) </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> welcomeUser = <span class="function"><span class="keyword">function</span>(<span class="params">Email, user</span>) </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>副作用包含</p>
+<ul>
+<li>更改文件系统</li>
+<li>往数据库插入记录</li>
+<li>发送一个 http 请求</li>
+<li>可变数据</li>
+<li>打印/log</li>
+<li>获取用户输入</li>
+<li>DOM 查询</li>
+<li>访问系统状态</li>
+</ul>
+<h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h3><p>像这样的虽然是IO操作，但是是纯函数的方式，不会受外部的影响,<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> getFromStorage = <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> localStorage[key];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一般不会用上面这种，而是像下面这样，<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> IO = <span class="function"><span class="keyword">function</span>(<span class="params">f</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.__value = f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IO.of = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> IO(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IO.prototype.map = <span class="function"><span class="keyword">function</span>(<span class="params">f</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> IO(R.compose(f, <span class="keyword">this</span>.__value));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>IO 跟之前的 functor 不同的地方在于，它的 __value 总是一个函数<br>IO 把非纯执行动作包裹到函数里，目的是延迟执行这个非纯动作。</p>
+<p>实际操作<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url = <span class="keyword">new</span> IO(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="built_in">window</span>.location.href;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> toPairs = R.compose(R.map(R.split(<span class="string">'='</span>)), R.split(<span class="string">'&amp;'</span>));</span><br><span class="line"><span class="keyword">var</span> fii = <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> R.map(R.compose(R.concat(key), R.split(<span class="string">'/'</span>)), url);</span><br><span class="line">&#125;</span><br><span class="line">fii(<span class="string">"地址："</span>).__value(); <span class="comment">// =&gt; 地址： path,xxxx</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="monad"><a href="#monad" class="headerlink" title="monad"></a>monad</h3><p>一个 functor，只要它定义个了一个 join 方法和一个 of 方法，并遵守一些定律，那么它就是一个 monad<br>这个的场景比如当用到多层io的时候会出现map(map(f));这个时候其实无需嵌套一层的，直接返回里面的值就可以了，<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> maybe = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>._value = x;</span><br><span class="line">      &#125;</span><br><span class="line">      maybe.of = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> maybe(x)</span><br><span class="line">      &#125;</span><br><span class="line">      maybe.prototype.map=<span class="function"><span class="keyword">function</span>(<span class="params">f</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> maybe.of(f(<span class="keyword">this</span>._value));</span><br><span class="line">      &#125;;</span><br><span class="line">      maybe.prototype.isNothing = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">this</span>._value === <span class="literal">null</span> || <span class="keyword">this</span>._value === <span class="literal">undefined</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 注意这里的join，返回了_value</span></span><br><span class="line">      maybe.prototype.join = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.isNothing() ? Maybe.of(<span class="literal">null</span>) : <span class="keyword">this</span>._value;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">var</span> safeProp = R.curry(<span class="function"><span class="keyword">function</span>(<span class="params">x, obj</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> maybe(obj[x]);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">var</span> safeHead = safeProp(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">var</span> joinTest = <span class="function"><span class="keyword">function</span>(<span class="params">mma</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mma.join()</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">var</span> address = R.compose(</span><br><span class="line">      joinTest,</span><br><span class="line">      R.map(safeProp(<span class="string">'street'</span>)),</span><br><span class="line">      joinTest,</span><br><span class="line">      R.map(safeHead),</span><br><span class="line">      safeProp(<span class="string">"address"</span>))</span><br><span class="line">      <span class="keyword">let</span> arrs =  &#123;</span><br><span class="line">           address:</span><br><span class="line">             [</span><br><span class="line">               &#123;</span><br><span class="line">                 street: &#123;<span class="attr">name</span>: <span class="string">'Mulburry'</span>, <span class="attr">number</span>: <span class="number">8402</span>&#125;,</span><br><span class="line">                 postcode: <span class="string">"WC2N"</span></span><br><span class="line">               &#125;</span><br><span class="line">             ]</span><br><span class="line">            &#125;;</span><br><span class="line">      <span class="keyword">let</span> a = address(arrs);</span><br><span class="line">      <span class="comment">// a =&gt; maybe&#123;_value: &#123;name: "Mulburry", number: 8402&#125;&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>了解了join，然后把map和join打包在一个函数里面，这个函数可以叫做chain或者flatMap，他的形式如下<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> chain = curry(<span class="function"><span class="keyword">function</span>(<span class="params">f, m</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> m.map(f).join(); <span class="comment">// 或者 R.compose(join, map(f))(m)</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>然后可以把上面的代码优化下<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> address = R.compose(</span><br><span class="line">    chain(safeProp(<span class="string">'street'</span>)),</span><br><span class="line">    chain(safeHead),</span><br><span class="line">    safeProp(<span class="string">"address"</span>))</span><br><span class="line"><span class="comment">// 为什么chain里面直接用参数自带的map而上面的是R.map,因为这里的参数是maybe，他的map方法和Ramda的原理是一样的，</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="applicative-functor"><a href="#applicative-functor" class="headerlink" title="applicative functor"></a>applicative functor</h3><p>applicative functor 是实现了 ap 方法的 pointed functor<br>场景：把一个 functor 的函数值应用到另一个 functor 的值上<br>比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">R.add(Container.of(<span class="number">2</span>), Container.of(<span class="number">3</span>));</span><br></pre></td></tr></table></figure>
+<p>这种是不对的，add取不到里面的值，需要一个ap函数来把一个 functor 的函数值应用到另一个 functor 的值上<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Container.prototype.ap=<span class="function"><span class="keyword">function</span>(<span class="params">f</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> f.map(<span class="keyword">this</span>.__value)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Container.of(R.add(<span class="number">2</span>)).ap(Container.of(<span class="number">3</span>));</span><br></pre></td></tr></table></figure></p>
+<p>这里比较绕，做好心理准备，从左向右执行，Container.of(R.add(2))，这里构造了一个Container，里面的__value是R.add(2)这个函数，然后它调用了ap方法，这个参数是Container.of(3)，所以</p>
+<p>Container.prototype.ap=function(f){</p>
+<p>这里的 <strong>f</strong> 是 <strong>Container.of(3)</strong>，然后 Container.of(3)调用了map方法，传的参数是<strong>this.__value</strong>,注意这里重点，这个 <strong>this.__value</strong> 是 <strong>R.add(2)</strong> ； 因为是Container.of(R.add(2))调用的ap方法，</p>
+<p>return f.map(this.__value)<br>}</p>
+<p>然后 f.map(this.__value)这里调用的事</p>
+<p>Container.prototype.map = function (f) {</p>
+<p>这里的<strong>f就是 R.add(2)</strong>了，因为是<strong>Container.of(3)</strong>调用的map方法，所以这里的<strong>this.__value</strong>就是3了， 最后就成了 <strong>R.add(2)(3)</strong>;</p>
+<p>return Container.of(f(this.__value))<br>}</p>
+<p>如果还是没理解，在我注释的地方console一下就明白了，</p>
+<p>上面的方法还可以写成<br><strong>Container.of(2).map(R.add).ap(Container.of(3));</strong></p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><h2 id="demo1-遍历数组返回虚拟dom"><a href="#demo1-遍历数组返回虚拟dom" class="headerlink" title="demo1 遍历数组返回虚拟dom"></a>demo1 遍历数组返回虚拟dom</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义好数据</span></span><br><span class="line"><span class="keyword">constructor</span>(props)&#123;</span><br><span class="line">    <span class="keyword">super</span>(props)</span><br><span class="line">    <span class="keyword">this</span>.state = &#123;</span><br><span class="line">        data = [&#123;</span><br><span class="line">            id: <span class="number">1</span>,</span><br><span class="line">            name: <span class="string">"王"</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            id: <span class="number">2</span>,</span><br><span class="line">            name: <span class="string">"李"</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            id: <span class="number">3</span>,</span><br><span class="line">            name: <span class="string">"张"</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 由map 遍历数据，再由addIndex给每个数据加上一个index，并返回dom，就是我们需要的虚拟dom了</span></span><br><span class="line">domap = <span class="function"><span class="params">()</span>=&gt;</span> R.addIndex(R.map(<span class="keyword">this</span>.doRender, <span class="keyword">this</span>.state.data))</span><br><span class="line">doRender = <span class="function">(<span class="params">data,key</span>) =&gt;</span> &#123;&lt;p key=&#123;key&#125;&gt;&#123;data.name&#125;&lt;<span class="regexp">/p&gt;&#125;</span></span><br><span class="line"><span class="regexp">render() &#123;</span></span><br><span class="line"><span class="regexp">    return &#123;this.domap()&#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="demo2-fetch封装"><a href="#demo2-fetch封装" class="headerlink" title="demo2 fetch封装"></a>demo2 fetch封装</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a href="http://www.ruanyifeng.com/blog/2017/03/ramda.html" target="_blank" rel="noopener">阮一峰ramda介绍</a><br><a href="http://ramda.cn/" target="_blank" rel="noopener">ramda中文网</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">ramda英文网</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/js/js笔记/" rel="next" title="js笔记">
+                <i class="fa fa-chevron-left"></i> js笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/react/hooks/" rel="prev" title="hook学习">
+                hook学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thdqn</p>
+              <div class="site-description motion-element" itemprop="description">thdqn的博客,个人技术笔记</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/yexiang1994" title="GitHub &rarr; https://github.com/yexiang1994" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" title="QQ &rarr; tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.web-jackiee.com/" title="http://www.web-jackiee.com/" rel="noopener" target="_blank">老牛的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xuanmo.xin/" title="https://www.xuanmo.xin/" rel="noopener" target="_blank">轩陌的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些概念"><span class="nav-number">1.</span> <span class="nav-text">一些概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#容器"><span class="nav-number">1.1.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maybe"><span class="nav-number">1.2.</span> <span class="nav-text">Maybe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#纯函数"><span class="nav-number">1.3.</span> <span class="nav-text">纯函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO"><span class="nav-number">1.4.</span> <span class="nav-text">IO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#monad"><span class="nav-number">1.5.</span> <span class="nav-text">monad</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#applicative-functor"><span class="nav-number">1.6.</span> <span class="nav-text">applicative functor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例"><span class="nav-number">1.7.</span> <span class="nav-text">案例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#demo1-遍历数组返回虚拟dom"><span class="nav-number">2.</span> <span class="nav-text">demo1 遍历数组返回虚拟dom</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#demo2-fetch封装"><span class="nav-number">3.</span> <span class="nav-text">demo2 fetch封装</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thdqn</span>
+
+  
+
+  
+</div>
+
+
+  <span class="author" itemprop="copyrightHolder">认准一件事需要坚持，不抛弃不放弃，加油!</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

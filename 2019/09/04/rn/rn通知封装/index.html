@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="目前只实现了android的通知。通知是当app没有在前台运行的时候希望用户接收某些重要信息的时候在手机最上方状态栏中显示的一个通知的图标，下拉栏后可以看见相关内容。 基本用法android使用NotificationManager来进行通知管理，使用Context的getSystemService（）方法里面获取到，此方法接收一个字符串用于确定获取系统的哪一个服务，这里使用Context.NOT">
+<meta name="keywords" content="react-native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rn通知">
+<meta property="og:url" content="http://thdqn.cn/2019/09/04/rn/rn通知封装/index.html">
+<meta property="og:site_name" content="thdqn">
+<meta property="og:description" content="目前只实现了android的通知。通知是当app没有在前台运行的时候希望用户接收某些重要信息的时候在手机最上方状态栏中显示的一个通知的图标，下拉栏后可以看见相关内容。 基本用法android使用NotificationManager来进行通知管理，使用Context的getSystemService（）方法里面获取到，此方法接收一个字符串用于确定获取系统的哪一个服务，这里使用Context.NOT">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://thdqn.cn:8081/imagePath/1556617737587.jpg">
+<meta property="og:updated_time" content="2019-05-05T02:11:03.994Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="rn通知">
+<meta name="twitter:description" content="目前只实现了android的通知。通知是当app没有在前台运行的时候希望用户接收某些重要信息的时候在手机最上方状态栏中显示的一个通知的图标，下拉栏后可以看见相关内容。 基本用法android使用NotificationManager来进行通知管理，使用Context的getSystemService（）方法里面获取到，此方法接收一个字符串用于确定获取系统的哪一个服务，这里使用Context.NOT">
+<meta name="twitter:image" content="http://thdqn.cn:8081/imagePath/1556617737587.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://thdqn.cn/2019/09/04/rn/rn通知封装/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>rn通知 | thdqn</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thdqn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">thdqn技术博客</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://thdqn.cn/2019/09/04/rn/rn通知封装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thdqn">
+      <meta itemprop="description" content="thdqn的博客,个人技术笔记">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thdqn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">rn通知
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 14:37:56" itemprop="dateCreated datePublished" datetime="2019-09-04T14:37:56+08:00">2019-09-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-05 10:11:03" itemprop="dateModified" datetime="2019-05-05T10:11:03+08:00">2019-05-05</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>目前只实现了android的通知。通知是当app没有在前台运行的时候希望用户接收某些重要信息的时候在手机最上方状态栏中显示的一个通知的图标，下拉栏后可以看见相关内容。</p>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>android使用NotificationManager来进行通知管理，使用Context的getSystemService（）方法里面获取到，此方法接收一个字符串用于确定获取系统的哪一个服务，这里使用Context.NOTIFICATION_SERVICE获取通知的方法，所有可以写成：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);</span><br></pre></td></tr></table></figure></p>
+<p>然后使用Builder来创建Notification对象，但是由于android版本问题，需要做兼容，这里使用support-v4库中的NotificationCompat类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Notification notification = <span class="keyword">new</span> NotificationCompat.Builder(context)</span><br><span class="line">        .setContentTitle(<span class="string">"this is e title"</span>) <span class="comment">// 标题</span></span><br><span class="line">        .setContentText(<span class="string">"this is content text"</span>) <span class="comment">//内容</span></span><br><span class="line">        .setWhen(System.currentTimeMillis()) <span class="comment">// 提示的时间</span></span><br><span class="line">        .setSmallIcon(R.mipmap.ic_launcher) <span class="comment">// 设置小图</span></span><br><span class="line">        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))  <span class="comment">// 设置大图</span></span><br><span class="line">        .setContentIntent(pi)</span><br><span class="line">        .setAutoCancel(<span class="keyword">true</span>) <span class="comment">// 打开提示后取消当前提示栏</span></span><br><span class="line">        .setSound(Uri.fromFile(<span class="keyword">new</span> File(<span class="string">"/system/media/audio/ringtones/Luna.ogg"</span>))) <span class="comment">// 设置提示声音,这里是系统的声音</span></span><br><span class="line">        .setDefaults(NotificationCompat.DEFAULT_ALL) <span class="comment">// 设置LED灯闪烁</span></span><br><span class="line">        .setPriority(NotificationCompat.PRIORITY_MAX) <span class="comment">// 设置通知是否重要，max表示最高重要的，会弹出到界面来</span></span><br><span class="line">        .build();</span><br><span class="line">manager.notify(<span class="number">1</span>, notification);  <span class="comment">// 这里的1表示每个通知id，不同通知使用这个数字区分开</span></span><br></pre></td></tr></table></figure></p>
+<p>setLights()方法接收三个参数，第一个是LED灯的颜色，第二个LED灯亮起的时长，第三个是LED暗去的时长，这里时长都是毫秒为单位，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Notification notification = <span class="keyword">new</span> NotificationCompat.Builder(context)</span><br><span class="line">...</span><br><span class="line">.setLights(Color.GREEN,<span class="number">1000</span>,<span class="number">1000</span>)</span><br><span class="line">.build();</span><br></pre></td></tr></table></figure></p>
+<p>setStyle()可以构建富文本通知，如文件太多一行会超出隐藏，想要展示多行，就需要这样做<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.setStyle(<span class="keyword">new</span> NotificationCompat.BigTextStyle().bigText(<span class="string">"new new newenewewnewenwenenwwenwnwenwnwnxxxxxxxxxxxxxxxxxxxxx"</span>))</span><br><span class="line">.build</span><br></pre></td></tr></table></figure></p>
+<p>添加一个图片<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.setStyle(<span class="keyword">new</span> NotificationCompat.BigPictureStyle().bigPicture(BitmapFactory.decodeResource(getResources(),R.deawable.big_image)))</span><br><span class="line">.build</span><br></pre></td></tr></table></figure></p>
+<p>setPriority()设置通知的重要性，PRIORITY_DEFAULT 默认的重要程度，PRIORITY_MIN最低的重要程度，比如用户下拉的时候才会展示一般不会展示，PRIORITY_LOW，表示较低的重要程度，系统会缩小这类通知的图标，或者改变他的顺序，PRIORITY_HIGH，系统会放大这类通知，或者排序提前，PRIORITY_MAX最高的通知，这类消息必须让用户离开看到，会弹出一个横幅。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.Intent;</span><br><span class="line"><span class="keyword">import</span> android.support.v4.app.NotificationCompat;</span><br><span class="line"><span class="keyword">import</span> android.app.Notification;</span><br><span class="line"><span class="keyword">import</span> android.app.NotificationManager;</span><br><span class="line"></span><br><span class="line">Context context = <span class="keyword">this</span>;</span><br><span class="line">Intent intent = <span class="keyword">new</span> Intent(context, NotificationActivity.class);</span><br><span class="line">PendingIntent pi = PendingIntent.getActivity(context,<span class="number">0</span>,intent,<span class="number">0</span>);</span><br><span class="line">NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);</span><br><span class="line">Notification notification = <span class="keyword">new</span> NotificationCompat.Builder(context)</span><br><span class="line">        .setContentTitle(<span class="string">"this is e title"</span>) <span class="comment">// 标题</span></span><br><span class="line">        .setContentText(<span class="string">"this is content text"</span>) <span class="comment">//内容</span></span><br><span class="line">        .setWhen(System.currentTimeMillis()) <span class="comment">// 提示的时间</span></span><br><span class="line">        .setSmallIcon(R.mipmap.ic_launcher) <span class="comment">// 设置小图</span></span><br><span class="line">        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))  <span class="comment">// 设置大图</span></span><br><span class="line">        .setContentIntent(pi)</span><br><span class="line">        .setAutoCancel(<span class="keyword">true</span>) <span class="comment">// 打开提示后取消当前提示栏</span></span><br><span class="line">        .setSound(Uri.fromFile(<span class="keyword">new</span> File(<span class="string">"/system/media/audio/ringtones/Luna.ogg"</span>))) <span class="comment">// 设置提示声音</span></span><br><span class="line">        .setDefaults(NotificationCompat.DEFAULT_ALL) <span class="comment">// 设置LED灯闪烁</span></span><br><span class="line">        .setPriority(NotificationCompat.PRIORITY_MAX) <span class="comment">// 设置通知是否重要，max表示最高重要的，会弹出到界面来</span></span><br><span class="line">        .build();</span><br><span class="line">manager.notify(<span class="number">1</span>, notification);</span><br></pre></td></tr></table></figure></p>
+<p>一般的通知不会放到activity里面执行，活动被销毁你通知也发不了，所有我这里就把通知放在了一个server里面，</p>
+<h2 id="什么是服务（server）"><a href="#什么是服务（server）" class="headerlink" title="什么是服务（server）"></a>什么是服务（server）</h2><p>服务（server）是android中实现程序后台运行的解决方案，适合做那些不需要和用户交互而且还要求长期运行的任务，服务不依赖于任何用户界面，即使程序被切换到后台或者用户打开了另外一个应用，服务仍然能够保持正常运行。但是服务不是运行在一个独立的进程中的，而是依赖于创建服务时所在的应用程序进程。当应用程序进程被杀掉时，所有依赖于该进程的服务也会停止运行。<br>服务不会开启一个线程，所有代码都是在主线程中运行的，也就是说服务是在主线程里面创建的子线程，</p>
+<h2 id="线程的基本用法"><a href="#线程的基本用法" class="headerlink" title="线程的基本用法"></a>线程的基本用法</h2><p>在了解下线程。在android中要执行一些比较耗时的操作时，通常不会再主线程里面做，而会单独开一个子线程去处理，防止主线程被堵塞了，线程用法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//     </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line"><span class="keyword">new</span> TestThread().start()</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line">TestThread testThread = <span class="keyword">new</span> TestThread();</span><br><span class="line"><span class="keyword">new</span> Thread(testThread).start();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+<p>如果要根据执行的任务来改变相应UI时需要用异步消息处理：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnclickListener</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TEXT =<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> TextView text;</span><br><span class="line">    <span class="keyword">private</span> Handler handler = <span class="keyword">new</span> Handler()&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span></span>&#123;</span><br><span class="line">            <span class="keyword">switch</span>(msg.what)&#123;</span><br><span class="line">                <span class="keyword">case</span> TEXT:</span><br><span class="line">                    <span class="comment">// 进行UI操作</span></span><br><span class="line">                    text.setText(<span class="string">"welcome"</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">default</span>:</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span></span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (v.getId())&#123;</span><br><span class="line">            <span class="keyword">case</span> R.id.change_text: </span><br><span class="line">                <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span> <span class="params">()</span></span>&#123;</span><br><span class="line">                        Message message = <span class="keyword">new</span> Message();</span><br><span class="line">                        message.what = TEXT;</span><br><span class="line">                        handler.sendMessage(message); <span class="comment">//将message发送出去,handler会接收这个消息</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).start();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="异步消息处理"><a href="#异步消息处理" class="headerlink" title="异步消息处理"></a>异步消息处理</h2><p>android中异步消息处理由4部分组成：Message,Handler,MessageQueue,Looper, </p>
+<h3 id="1-Message"><a href="#1-Message" class="headerlink" title="1. Message"></a>1. Message</h3><p>Message是在线程之前传递的消息，可以在内部携带少量的信息，用于在不同线程之间交换数据，</p>
+<h3 id="2-Handler"><a href="#2-Handler" class="headerlink" title="2. Handler"></a>2. Handler</h3><p>主要是用于发送和处理消息，发送消息一般是Handler和sendMessage方法，而发送的消息一般会回到Handler和handleMessage方法中</p>
+<h3 id="3-MessageQueue"><a href="#3-MessageQueue" class="headerlink" title="3. MessageQueue"></a>3. MessageQueue</h3><p>MessageQueue是消息队列的意思，主要用于存放所有通过Handler发送的消息，这部分消息会一直存在消息队列里面，等待被处理，每个线程只有一个MessageQueue对象。</p>
+<h3 id="4-Looper"><a href="#4-Looper" class="headerlink" title="4. Looper"></a>4. Looper</h3><p>Looper是每个线程中的MessageQueue的管家，调用Looper的loop方法后，就会进入一个无线循环中，每当发现MessageQueue中存在一条消息，就会将他取出来，并传递到Handler的handlerMessage方法中，每个线程中也只有一个Looper对象</p>
+<p>回到整体服务（service）<br>在android里面创建一个service类，new-&gt;Services-&gt;Service 他会自动添加到AndroidManifest.xml里面，<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">service</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">".MyService"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:process</span>=<span class="string">":push"</span>&gt;</span><span class="tag">&lt;/<span class="name">service</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span></span>&#123;  <span class="comment">// service创建的时候调用</span></span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// service每次启动的时候都执行一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">onStartCommand</span><span class="params">(<span class="keyword">final</span> Intent intent, <span class="keyword">int</span> flags, <span class="keyword">int</span> startId)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onStartCommand(intent,flags,startId);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 服务被停掉的时候调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="app保活一直能发通知"><a href="#app保活一直能发通知" class="headerlink" title="app保活一直能发通知"></a>app保活一直能发通知</h2><p>一般app进入后台后，service是正常运行的，不会被杀死，activity也是正常运行的，这时候手机是可以接受通知。但是当用户主动清空后台之后，这两个都被杀掉了，彻底发送不了通知了。google其实是有一个GCM通知的，这个是手机集成的，在主程序里面，发送者发送通知到google服务器，然后google服务器接受到发送的消息转发到手机上，手机就收到了通知。但是这就需要手机自带google的功能，在国内这种是使用不了的，被墙掉了。<br>然后就出现了一堆第三方的推送，如极光推送，华为推送，小米推送，这些推送都是类似上面GCM通知一样，第三方转发通知。像极光推送是集成在app里面的，当app被杀掉本来这个也是没用了的，但是为啥还能推送，是因为很多app都集成了这个，如果其他app没有被杀掉那么其他app里面集成的极光就会代理发送当前通知，达到通知的目的。而华为小米，应该是手机内部之间有推送服务，这种应该更稳定些。<br>要说为啥微信，qq程序清空后台杀不掉，能一直推送，估计是因为和厂商有py交易，但是像我的华为手机关掉应用的 启动管理，允许后台活动，允许关联启动，允许自启动后，就不会推送了。但是用adb shell ps | findstr tencent<br><img src="http://thdqn.cn:8081/imagePath/1556617737587.jpg" alt><br>可以看到就算关闭了后台运行，这些腾讯服务还是存在的，但是一般app就不行了。<br>所以想要实现保活就用第三方吧，具体稳定性也不好说，我这里使用的局域网，第三方没戏，所以也不必要求一定保活，只要确保后台运行时能推送就ok了。</p>
+<h2 id="service代码"><a href="#service代码" class="headerlink" title="service代码"></a>service代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.selectot;</span><br><span class="line"><span class="keyword">import</span> android.app.Notification;</span><br><span class="line"><span class="keyword">import</span> android.app.NotificationManager;</span><br><span class="line"><span class="keyword">import</span> android.app.PendingIntent;</span><br><span class="line"><span class="keyword">import</span> android.app.Service;</span><br><span class="line"><span class="keyword">import</span> android.content.BroadcastReceiver;</span><br><span class="line"><span class="keyword">import</span> android.content.ComponentName;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.Intent;</span><br><span class="line"><span class="keyword">import</span> android.content.IntentFilter;</span><br><span class="line"><span class="keyword">import</span> android.content.ServiceConnection;</span><br><span class="line"><span class="keyword">import</span> android.graphics.BitmapFactory;</span><br><span class="line"><span class="keyword">import</span> android.net.Uri;</span><br><span class="line"><span class="keyword">import</span> android.os.IBinder;</span><br><span class="line"><span class="keyword">import</span> android.os.PowerManager;</span><br><span class="line"><span class="keyword">import</span> android.support.v4.app.NotificationCompat;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.service.MyIntentService;</span><br><span class="line"><span class="keyword">import</span> com.service.WLWakefulReceiver;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.util.Timer;</span><br><span class="line"><span class="keyword">import</span> java.util.TimerTask;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> BroadcastReceiver mReceiver;</span><br><span class="line">    <span class="keyword">private</span> IntentFilter mIf;</span><br><span class="line">    <span class="keyword">private</span> Intent testIntent;</span><br><span class="line">    <span class="keyword">private</span> Context context;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> String TAG = <span class="string">"targets"</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">"Not yet implemented"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">onStartCommand</span><span class="params">(<span class="keyword">final</span> Intent intent, <span class="keyword">int</span> flags, <span class="keyword">int</span> startId)</span></span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"onStartCommand: "</span>+<span class="string">"fas"</span>);</span><br><span class="line">        Timer timer = <span class="keyword">new</span> Timer();</span><br><span class="line">        TimerTask task = <span class="keyword">new</span> TimerTask() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                init();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        timer.schedule(task,<span class="number">0</span>,<span class="number">5000</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onStartCommand(intent,flags,startId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"onDestroy: "</span>+<span class="string">"服务被销毁"</span>);</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendNotice</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Context context = <span class="keyword">this</span>;</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(context, NotificationActivity.class);</span><br><span class="line">        PendingIntent pi = PendingIntent.getActivity(context,<span class="number">0</span>,intent,<span class="number">0</span>);</span><br><span class="line">        NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);</span><br><span class="line">        Notification notification = <span class="keyword">new</span> NotificationCompat.Builder(context)</span><br><span class="line">                .setContentTitle(<span class="string">"this is e title"</span>) <span class="comment">// 标题</span></span><br><span class="line">                .setContentText(<span class="string">"this is content text"</span>) <span class="comment">//内容</span></span><br><span class="line">                .setWhen(System.currentTimeMillis()) <span class="comment">// 提示的时间</span></span><br><span class="line">                .setSmallIcon(R.mipmap.ic_launcher) <span class="comment">// 设置小图</span></span><br><span class="line">                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))  <span class="comment">// 设置大图</span></span><br><span class="line">                .setContentIntent(pi)</span><br><span class="line">                .setAutoCancel(<span class="keyword">true</span>) <span class="comment">// 打开提示后取消当前提示栏</span></span><br><span class="line">                .setSound(Uri.fromFile(<span class="keyword">new</span> File(<span class="string">"/system/media/audio/ringtones/Luna.ogg"</span>))) <span class="comment">// 设置提示声音</span></span><br><span class="line">                .setDefaults(NotificationCompat.DEFAULT_ALL) <span class="comment">// 设置LED灯闪烁</span></span><br><span class="line">                .setPriority(NotificationCompat.PRIORITY_MAX) <span class="comment">// 设置通知是否重要，max表示最高重要的，会弹出到界面来</span></span><br><span class="line">                .build();</span><br><span class="line">        manager.notify(<span class="number">1</span>, notification);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"init: "</span> + <span class="string">"发送"</span>);</span><br><span class="line">        <span class="comment">//（Application Processor），可以阻止屏幕变暗。所有的WakeLock被释放后，系统会挂起。</span></span><br><span class="line">        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);</span><br><span class="line">        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.ON_AFTER_RELEASE</span><br><span class="line">                | PowerManager.PARTIAL_WAKE_LOCK, <span class="string">"MyWakelockTag"</span>);</span><br><span class="line">        wakeLock.acquire();</span><br><span class="line">        <span class="keyword">this</span>.sendNotice();</span><br><span class="line">        wakeLock.release();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// 启动服务</span></span><br><span class="line"><span class="meta">@ReactMethod</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Context context = MainActivity.getContext();</span><br><span class="line">    Intent in = <span class="keyword">new</span> Intent(context, MyService.class);</span><br><span class="line">    context.startService(in);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react-native/" rel="tag"># react-native</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/rn/rn存储文件到本地/" rel="next" title="rn数据存储">
+                <i class="fa fa-chevron-left"></i> rn数据存储
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/rn/UDP协议实现rn通信/" rel="prev" title="UDP协议实现rn app之间通信">
+                UDP协议实现rn app之间通信 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thdqn</p>
+              <div class="site-description motion-element" itemprop="description">thdqn的博客,个人技术笔记</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/yexiang1994" title="GitHub &rarr; https://github.com/yexiang1994" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" title="QQ &rarr; tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.web-jackiee.com/" title="http://www.web-jackiee.com/" rel="noopener" target="_blank">老牛的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xuanmo.xin/" title="https://www.xuanmo.xin/" rel="noopener" target="_blank">轩陌的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本用法"><span class="nav-number">1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是服务（server）"><span class="nav-number">2.</span> <span class="nav-text">什么是服务（server）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的基本用法"><span class="nav-number">3.</span> <span class="nav-text">线程的基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步消息处理"><span class="nav-number">4.</span> <span class="nav-text">异步消息处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Message"><span class="nav-number">4.1.</span> <span class="nav-text">1. Message</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Handler"><span class="nav-number">4.2.</span> <span class="nav-text">2. Handler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-MessageQueue"><span class="nav-number">4.3.</span> <span class="nav-text">3. MessageQueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Looper"><span class="nav-number">4.4.</span> <span class="nav-text">4. Looper</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#app保活一直能发通知"><span class="nav-number">5.</span> <span class="nav-text">app保活一直能发通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#service代码"><span class="nav-number">6.</span> <span class="nav-text">service代码</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thdqn</span>
+
+  
+
+  
+</div>
+
+
+  <span class="author" itemprop="copyrightHolder">认准一件事需要坚持，不抛弃不放弃，加油!</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

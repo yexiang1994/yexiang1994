@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="最近写android的tcp通信，用来传输文件，用原生的写太麻烦了，还有开线程互相监听，一堆操作比较繁琐，了解到netty比较好用，封装的简单，就用了这个来写。用的netty版本 ‘io.netty:netty-all:4.1.6.Final’ ,先注册一个线程池 EventLoopGroup group =new NioEventLoopGroup();放在全局， 这里是服务端，只写了接收信息1">
+<meta name="keywords" content="netty">
+<meta property="og:type" content="article">
+<meta property="og:title" content="netty的学习">
+<meta property="og:url" content="http://thdqn.cn/2019/09/04/java/netty的学习/index.html">
+<meta property="og:site_name" content="thdqn">
+<meta property="og:description" content="最近写android的tcp通信，用来传输文件，用原生的写太麻烦了，还有开线程互相监听，一堆操作比较繁琐，了解到netty比较好用，封装的简单，就用了这个来写。用的netty版本 ‘io.netty:netty-all:4.1.6.Final’ ,先注册一个线程池 EventLoopGroup group =new NioEventLoopGroup();放在全局， 这里是服务端，只写了接收信息1">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-25T08:07:10.903Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="netty的学习">
+<meta name="twitter:description" content="最近写android的tcp通信，用来传输文件，用原生的写太麻烦了，还有开线程互相监听，一堆操作比较繁琐，了解到netty比较好用，封装的简单，就用了这个来写。用的netty版本 ‘io.netty:netty-all:4.1.6.Final’ ,先注册一个线程池 EventLoopGroup group =new NioEventLoopGroup();放在全局， 这里是服务端，只写了接收信息1">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://thdqn.cn/2019/09/04/java/netty的学习/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>netty的学习 | thdqn</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thdqn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">thdqn技术博客</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://thdqn.cn/2019/09/04/java/netty的学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thdqn">
+      <meta itemprop="description" content="thdqn的博客,个人技术笔记">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thdqn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">netty的学习
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 14:37:55" itemprop="dateCreated datePublished" datetime="2019-09-04T14:37:55+08:00">2019-09-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-25 16:07:10" itemprop="dateModified" datetime="2019-07-25T16:07:10+08:00">2019-07-25</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近写android的tcp通信，用来传输文件，用原生的写太麻烦了，还有开线程互相监听，一堆操作比较繁琐，了解到netty比较好用，封装的简单，就用了这个来写。<br>用的netty版本 ‘io.netty:netty-all:4.1.6.Final’ ,<br>先注册一个线程池 EventLoopGroup group =new NioEventLoopGroup();放在全局，</p>
+<h2 id="这里是服务端，只写了接收信息"><a href="#这里是服务端，只写了接收信息" class="headerlink" title="这里是服务端，只写了接收信息"></a>这里是服务端，只写了接收信息</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MainApplication 里面的 因为这里是写的android所以放到了MainApplication里面注册的</span></span><br><span class="line">EventLoopGroup group = MainApplication.getGroup();</span><br><span class="line">ChannelFuture cf = MainApplication.getCf();</span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ChannelFuture cf =MainApplication.getCf();</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> EventLoopGroup group = MainApplication.getGroup();</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">start</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">    Bootstrap b = <span class="keyword">new</span> Bootstrap();</span><br><span class="line">    b.group(group) <span class="comment">// 注册线程池</span></span><br><span class="line">            .channel(NioSocketChannel.class)</span><br><span class="line">            <span class="comment">// 设置缓存区大小</span></span><br><span class="line">    <span class="comment">//                    .option(ChannelOption.RCVBUF_ALLOCATOR,</span></span><br><span class="line">    <span class="comment">//                            new AdaptiveRecvByteBufAllocator(64,1024,204800))</span></span><br><span class="line">            <span class="comment">// 使用NioSocketChannel来作为连接用的channel类</span></span><br><span class="line">            .remoteAddress(<span class="keyword">new</span> InetSocketAddress(host, port))</span><br><span class="line">            <span class="comment">// 绑定连接端口和host信息</span></span><br><span class="line">            .handler(<span class="keyword">new</span> ChannelInitializer&lt;SocketChannel&gt;() &#123; <span class="comment">// 绑定连接初始化器</span></span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(SocketChannel ch)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"initChannel: 正在连接中..."</span>);</span><br><span class="line">                    <span class="comment">// 设置好可以打印传输的流信息</span></span><br><span class="line">    <span class="comment">//                            ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO));</span></span><br><span class="line">                    ch.pipeline().addLast(<span class="keyword">new</span> StringEncoder(Charset.forName(<span class="string">"UTF-8"</span>)));</span><br><span class="line">                    <span class="comment">// 实例化一个处理类，传一些需要用到的参数参数</span></span><br><span class="line">                    ch.pipeline().addLast(<span class="keyword">new</span> ClientHandle(filePath, data, promise, host, port));</span><br><span class="line">                    ch.pipeline().addLast(<span class="keyword">new</span> ByteArrayEncoder());</span><br><span class="line">                    ch.pipeline().addLast(<span class="keyword">new</span> ChunkedWriteHandler());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">    <span class="comment">// System.out.println("服务端连接成功..");</span></span><br><span class="line">    cf = b.connect().sync(); <span class="comment">// 异步连接服务器</span></span><br><span class="line">    cf.channel().closeFuture().sync();<span class="comment">// 异步等待关闭连接channel</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">// 最后执行完可以释放线程池，如果有多次操作就没必要释放了，</span></span><br><span class="line">    <span class="comment">//            group.shutdownGracefully().sync(); // 释放线程池资源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientHandle</span> <span class="keyword">extends</span> <span class="title">SimpleChannelInboundHandler</span>&lt;<span class="title">ByteBuf</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> fileSize = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> String TAG =<span class="string">"LoggingHandler"</span>;</span><br><span class="line">    <span class="keyword">private</span> DataOutputStream out;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ClientHandle</span><span class="params">(String filePath, Map data, String host, <span class="keyword">int</span> port)</span> <span class="keyword">throws</span> FileNotFoundException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="comment">// 其他一些参数无视掉</span></span><br><span class="line">        Log.e(TAG, <span class="string">"ClientHandle: "</span>+<span class="string">"进来了ClientHandle"</span>);</span><br><span class="line">        <span class="keyword">this</span>.filePath = filePath;</span><br><span class="line">        <span class="comment">// 这里被实例化后就创建文件流。然后在下面写入文件</span></span><br><span class="line">        out = <span class="keyword">new</span> DataOutputStream(</span><br><span class="line">                <span class="keyword">new</span> BufferedOutputStream(</span><br><span class="line">                        <span class="keyword">new</span> FileOutputStream(filePath)));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 向服务端发送数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelActive</span><span class="params">(ChannelHandlerContext ctx)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="comment">//        Log.d(TAG, "客户端与服务端通道-开启：" + ctx.channel().localAddress() +</span></span><br><span class="line"><span class="comment">//                "channelActive");</span></span><br><span class="line">        Log.d(TAG, <span class="string">"channelActive: "</span>);</span><br><span class="line">        ctx.writeAndFlush(); <span class="comment">// 可以发送流信息</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * channelInactive</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * channel 通道 Inactive 不活跃的</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 当客户端主动断开服务端的链接后，这个通道就是不活跃的。也就是说客户端与服务端的关闭了通信通道并且不可</span></span><br><span class="line"><span class="comment">     以传输数据</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelInactive</span><span class="params">(ChannelHandlerContext ctx)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        Log.d(TAG, <span class="string">"客户端与服务端通道-关闭："</span> + ctx.channel().localAddress() +</span><br><span class="line">                <span class="string">"channelInactive"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这里读取数据，每次流进来就会触发此函数</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">channelRead0</span><span class="params">(ChannelHandlerContext ctx, ByteBuf msg)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 这里msg当然需要转化下的，转换格式根据服务端的编码转换</span></span><br><span class="line">        out.write(msg)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(ChannelHandlerContext ctx, Throwable cause)</span> <span class="keyword">throws</span></span></span><br><span class="line"><span class="function">            Exception </span>&#123;</span><br><span class="line">        ctx.close();</span><br><span class="line">        cause.printStackTrace();</span><br><span class="line">        Log.d(TAG, <span class="string">"异常退出"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>这里可能有点不是很搭，但是毕竟好配合我们的业务，因为客户端是安装在一个小板子上面的，板子存储能力很弱，所有就选择了node来做服务端来发送消息。</p>
+<h3 id="node-tcp发送消息"><a href="#node-tcp发送消息" class="headerlink" title="node tcp发送消息"></a>node tcp发送消息</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> net = <span class="built_in">require</span>(<span class="string">'net'</span>);</span><br><span class="line">net.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">socket</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// socket.setKeepAlive(true, 1000);</span></span><br><span class="line">  socket.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    transferUtils.resolveAndSendFile(data, socket);</span><br><span class="line">  &#125;);</span><br><span class="line">  socket.on(<span class="string">'close'</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	  <span class="built_in">console</span>.log(<span class="string">"client close"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  socket.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Socket transmit error!"</span>, err);</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// 监听15000端口</span></span><br><span class="line">&#125;).listen(<span class="number">15000</span>, <span class="string">"0.0.0.0"</span>);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/netty/" rel="tag"># netty</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/java/java的类和JSON之间的转换/" rel="next" title="java的类和JSON之间的转换">
+                <i class="fa fa-chevron-left"></i> java的类和JSON之间的转换
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/js/js笔记/" rel="prev" title="js笔记">
+                js笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thdqn</p>
+              <div class="site-description motion-element" itemprop="description">thdqn的博客,个人技术笔记</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/yexiang1994" title="GitHub &rarr; https://github.com/yexiang1994" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" title="QQ &rarr; tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.web-jackiee.com/" title="http://www.web-jackiee.com/" rel="noopener" target="_blank">老牛的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xuanmo.xin/" title="https://www.xuanmo.xin/" rel="noopener" target="_blank">轩陌的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#这里是服务端，只写了接收信息"><span class="nav-number">1.</span> <span class="nav-text">这里是服务端，只写了接收信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端"><span class="nav-number">2.</span> <span class="nav-text">客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#node-tcp发送消息"><span class="nav-number">2.1.</span> <span class="nav-text">node tcp发送消息</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thdqn</span>
+
+  
+
+  
+</div>
+
+
+  <span class="author" itemprop="copyrightHolder">认准一件事需要坚持，不抛弃不放弃，加油!</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

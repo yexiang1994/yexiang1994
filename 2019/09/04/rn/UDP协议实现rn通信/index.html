@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="最近要求要用rn做一个udp通信的软件，首先先了解下这些udp这些概念。然后在android里面开始写组件 简单介绍这里需要用到DatagramSocket方法123456789try &amp;#123;    /******* 接收数据流程**/    // 创建一个数据报套接字，并将其绑定到指定到当前要发送的端口，如8084    datagramSocket = new DatagramSocke">
+<meta name="keywords" content="react-native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UDP协议实现rn app之间通信">
+<meta property="og:url" content="http://thdqn.cn/2019/09/04/rn/UDP协议实现rn通信/index.html">
+<meta property="og:site_name" content="thdqn">
+<meta property="og:description" content="最近要求要用rn做一个udp通信的软件，首先先了解下这些udp这些概念。然后在android里面开始写组件 简单介绍这里需要用到DatagramSocket方法123456789try &amp;#123;    /******* 接收数据流程**/    // 创建一个数据报套接字，并将其绑定到指定到当前要发送的端口，如8084    datagramSocket = new DatagramSocke">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-06T08:47:09.129Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UDP协议实现rn app之间通信">
+<meta name="twitter:description" content="最近要求要用rn做一个udp通信的软件，首先先了解下这些udp这些概念。然后在android里面开始写组件 简单介绍这里需要用到DatagramSocket方法123456789try &amp;#123;    /******* 接收数据流程**/    // 创建一个数据报套接字，并将其绑定到指定到当前要发送的端口，如8084    datagramSocket = new DatagramSocke">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://thdqn.cn/2019/09/04/rn/UDP协议实现rn通信/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>UDP协议实现rn app之间通信 | thdqn</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thdqn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">thdqn技术博客</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://thdqn.cn/2019/09/04/rn/UDP协议实现rn通信/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thdqn">
+      <meta itemprop="description" content="thdqn的博客,个人技术笔记">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thdqn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">UDP协议实现rn app之间通信
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 14:37:56" itemprop="dateCreated datePublished" datetime="2019-09-04T14:37:56+08:00">2019-09-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-06 16:47:09" itemprop="dateModified" datetime="2019-06-06T16:47:09+08:00">2019-06-06</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近要求要用rn做一个udp通信的软件，首先先了解下这些udp这些概念。<br>然后在android里面开始写组件</p>
+<h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p>这里需要用到DatagramSocket方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">/******* 接收数据流程**/</span></span><br><span class="line">    <span class="comment">// 创建一个数据报套接字，并将其绑定到指定到当前要发送的端口，如8084</span></span><br><span class="line">    datagramSocket = <span class="keyword">new</span> DatagramSocket(<span class="number">8084</span>);</span><br><span class="line">    <span class="comment">// 组装数据报,绑定要发送的ip地址，本地测试如127.0.0.1</span></span><br><span class="line">    inetAddress =  <span class="keyword">new</span> InetSocketAddress(<span class="string">"127.0.0.1"</span>, <span class="number">8085</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (SocketException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>创建好了连接就发送信息<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendMsg</span><span class="params">(String data)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 要发送的数据data</span></span><br><span class="line">        mes = data;</span><br><span class="line">        <span class="keyword">byte</span>[] buf = mes.getBytes();</span><br><span class="line">        DatagramPacket sendPacket = <span class="keyword">new</span> DatagramPacket(buf, buf.length, inetAddress);</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">// 组装成功后发送</span></span><br><span class="line">            datagramSocket.send(sendPacket);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接收信息，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (receiveSocket == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 创建DatagramSocket，绑定8085端口,</span></span><br><span class="line">            receiveSocket = <span class="keyword">new</span> DatagramSocket(<span class="number">8085</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 预留1024字节缓冲区</span></span><br><span class="line">        <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        datagramPacket= <span class="keyword">new</span> DatagramPacket(bytes, <span class="number">0</span>, bytes.length);</span><br><span class="line">        <span class="comment">// 启用新线程监听receive方法，因为receiveSocket.receive() 方法会阻塞线程，</span></span><br><span class="line">        <span class="comment">// 所有必须要开新的线程</span></span><br><span class="line">        newThreads = <span class="keyword">new</span> Thread(<span class="keyword">new</span> NewThread());</span><br><span class="line">        newThreads.start();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (SocketException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 创建线程</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 因为 receiveSocket.receive是阻塞方法，只有接收到数据后，才会执行下一个for循环内容，</span></span><br><span class="line">            <span class="comment">// 这里可以随便给个最大值，比如100000</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">100000</span> ; i++) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    receiveSocket.receive(datagramPacket);</span><br><span class="line">                    <span class="comment">// 获取接收到的数据（为string类型），然后去掉前后的空格</span></span><br><span class="line">                    String msg = <span class="keyword">new</span> String(datagramPacket.getData()).trim();</span><br><span class="line">                    <span class="comment">// 把数据组合成 jsonobject</span></span><br><span class="line">                    JSONObject msgObj = <span class="keyword">new</span> JSONObject();</span><br><span class="line">                    <span class="keyword">try</span>&#123;</span><br><span class="line">                        msgObj.put(<span class="string">"msgs"</span>, msg);</span><br><span class="line">                    &#125;<span class="keyword">catch</span> (JSONException e)&#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 然后放到jsonarray里面,我这里最好是以json的格式传到rn的</span></span><br><span class="line">                    message.put(msgObj);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SocketException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="有的手机接收不到通知"><a href="#有的手机接收不到通知" class="headerlink" title="有的手机接收不到通知"></a>有的手机接收不到通知</h3><p>如果你的手机收不到通知，其他的可以，那么你的手机应该是把接受广播的功能关了，因为手机为了省电吧，<br>执行下面的打开接收通知就可以了，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE);</span><br><span class="line">WifiInfo wifiInfo = wifiManager.getConnectionInfo();</span><br><span class="line">multicastLock=wifiManager.createMulticastLock(<span class="string">"multicast.test"</span>);</span><br><span class="line">multicastLock.acquire();</span><br></pre></td></tr></table></figure></p>
+<p>上面方法在MainActivity里面的onCreate里面执行</p>
+<h2 id="全部代码："><a href="#全部代码：" class="headerlink" title="全部代码："></a>全部代码：</h2><p>发送数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.net.DatagramPacket;</span><br><span class="line"><span class="keyword">import</span> java.net.DatagramSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.InetAddress;</span><br><span class="line"><span class="keyword">import</span> java.net.InetSocketAddress;</span><br><span class="line"><span class="keyword">import</span> java.net.SocketException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatagramServer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> MAX_LENGTH = <span class="number">1024</span>; <span class="comment">// 最大接收字节长度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> port = <span class="number">8084</span>;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] receMsgs = <span class="keyword">new</span> <span class="keyword">byte</span>[MAX_LENGTH];</span><br><span class="line">    <span class="keyword">private</span> DatagramSocket datagramSocket = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> DatagramPacket datagramPacket = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">public</span> String message = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">private</span> String tag = <span class="string">"sockets"</span>;</span><br><span class="line">    <span class="keyword">private</span> String mes= <span class="string">"i had send"</span>;</span><br><span class="line">    <span class="keyword">private</span> InetSocketAddress inetAddress;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openServer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            datagramSocket = <span class="keyword">new</span> DatagramSocket(port);</span><br><span class="line">            inetAddress =  <span class="keyword">new</span> InetSocketAddress(<span class="string">"127.0.0.1"</span>, <span class="number">8085</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SocketException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendMsg</span><span class="params">(String data)</span></span>&#123;</span><br><span class="line">        mes = data;</span><br><span class="line">        <span class="keyword">byte</span>[] buf = mes.getBytes();</span><br><span class="line">        inetAddress =  <span class="keyword">new</span> InetSocketAddress(<span class="string">"127.0.0.1"</span>, <span class="number">8085</span>);</span><br><span class="line">        DatagramPacket sendPacket = <span class="keyword">new</span> DatagramPacket(buf, buf.length, inetAddress);</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            datagramSocket.send(sendPacket);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接收数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.socket;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.Arguments;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.WritableMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.json.JSONArray;</span><br><span class="line"><span class="keyword">import</span> org.json.JSONException;</span><br><span class="line"><span class="keyword">import</span> org.json.JSONObject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.net.DatagramPacket;</span><br><span class="line"><span class="keyword">import</span> java.net.DatagramSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.SocketException;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatagramClint</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DatagramSocket receiveSocket = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> receivePort = <span class="number">8085</span>;</span><br><span class="line">    <span class="keyword">private</span> DatagramPacket datagramPacket;</span><br><span class="line">    <span class="keyword">public</span> JSONArray message = <span class="keyword">new</span> JSONArray();</span><br><span class="line">    <span class="keyword">private</span> String tag = <span class="string">"sockets"</span>;</span><br><span class="line">    <span class="keyword">private</span> Thread newThreads;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (receiveSocket == <span class="keyword">null</span>) &#123;</span><br><span class="line">                receiveSocket = <span class="keyword">new</span> DatagramSocket(receivePort);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            datagramPacket= <span class="keyword">new</span> DatagramPacket(bytes, <span class="number">0</span>, bytes.length);</span><br><span class="line">             newThreads = <span class="keyword">new</span> Thread(<span class="keyword">new</span> NewThread());</span><br><span class="line">             newThreads.start();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SocketException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">NewThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; Integer.MAX_VALUE ; i++) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    receiveSocket.receive(datagramPacket);</span><br><span class="line">                    Long times = <span class="keyword">new</span> Date().getTime();</span><br><span class="line">                    String msg = <span class="keyword">new</span> String(datagramPacket.getData()).trim();</span><br><span class="line">                    JSONObject tmpObj = <span class="keyword">new</span> JSONObject();</span><br><span class="line">                    <span class="keyword">try</span>&#123;</span><br><span class="line">                        tmpObj.put(<span class="string">"msgs"</span>, msg);</span><br><span class="line">                        tmpObj.put(<span class="string">"time"</span>, times);</span><br><span class="line">                    &#125;<span class="keyword">catch</span> (JSONException e)&#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    message.put(tmpObj);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SocketException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>封装成rn方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.util.JsonToken;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.Callback;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.Promise;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactContextBaseJavaModule;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactMethod;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.json.JSONArray;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatagramUtils</span> <span class="keyword">extends</span> <span class="title">ReactContextBaseJavaModule</span></span>&#123;</span><br><span class="line">    ReactApplicationContext context;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DatagramClint datagramClint;</span><br><span class="line">    <span class="keyword">private</span> DatagramServer datagramServer;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DatagramUtils</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(reactContext);</span><br><span class="line">        context = reactContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"datagram"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serverOpent</span><span class="params">()</span></span>&#123;</span><br><span class="line">        datagramServer = <span class="keyword">new</span> DatagramServer();</span><br><span class="line">        datagramServer.openServer();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendMsg</span><span class="params">(String mes)</span></span>&#123;</span><br><span class="line">        datagramServer.sendMsg(mes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clintOpent</span><span class="params">()</span></span>&#123;</span><br><span class="line">        datagramClint = <span class="keyword">new</span> DatagramClint();</span><br><span class="line">        datagramClint.receive();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receiveMsg</span><span class="params">(Callback calback)</span></span>&#123;</span><br><span class="line">        String data = <span class="string">""</span>;</span><br><span class="line">        <span class="comment">// 以string的方式传递数据</span></span><br><span class="line">        calback.invoke(datagramClint.message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>package rn的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.socket;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.ReactPackage;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.NativeModule;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.uimanager.ViewManager;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Collections;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatagramPackage</span> <span class="keyword">implements</span> <span class="title">ReactPackage</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;ViewManager&gt; <span class="title">createViewManagers</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Collections.emptyList();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;NativeModule&gt; <span class="title">createNativeModules</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">        List&lt;NativeModule&gt; modules = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        modules.add(<span class="keyword">new</span> DatagramUtils(reactContext));</span><br><span class="line">        <span class="keyword">return</span> modules;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加到主函数里面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> List&lt;ReactPackage&gt; <span class="title">getPackages</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Arrays.&lt;ReactPackage&gt;asList(</span><br><span class="line">        <span class="keyword">new</span> MainReactPackage(),</span><br><span class="line">        <span class="keyword">new</span> DatagramPackage()</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前端用法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  NativeModules,</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 首先打开通信</span></span><br><span class="line">NativeModules.datagram.clintOpent();</span><br><span class="line">NativeModules.datagram.serverOpent();</span><br><span class="line"><span class="comment">//然后根据方法传递过去信息</span></span><br><span class="line">press() &#123;</span><br><span class="line">    NativeModules.datagram.sendMsg(<span class="keyword">this</span>.state.text);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里返回监听的数据</span></span><br><span class="line">    NativeModules.datagram.receiveMsg(<span class="function"><span class="params">rs</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            <span class="comment">// 返回回来的string数据转换成数组，</span></span><br><span class="line">          data: <span class="built_in">JSON</span>.parse(rs)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h2><p>在实现发送信息的时候会出现，当下次接收到的数据字（a长度）节小于前一次的（b长度）的时候，接收到的信息只会更新前a个数据，b-a后面的数据依然存在，比如第一次发送abc，第二次发送12，这时接收到的数据就是12c而不是我们想要的12。 这时因为udp存在缓存问题，所以要清空缓存。</p>
+<h3 id="清空缓存方法"><a href="#清空缓存方法" class="headerlink" title="清空缓存方法"></a>清空缓存方法</h3><p>方法：在取出数据后，执行如下方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 上面的这个创建缓存区的方法可以提取出来</span></span><br><span class="line"><span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line"><span class="comment">// 然后在</span></span><br><span class="line">Arrays.fill(bytes,(<span class="keyword">byte</span>)<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+<p>然后就清空了缓存区域</p>
+<h2 id="广播问题"><a href="#广播问题" class="headerlink" title="广播问题"></a>广播问题</h2><p>需要先了解下ip和子网掩码二进制转化：<br>IP地址是一个32位的二进制数，通常被分割为4个“8位二进制数”（也就是4个字节）。IP地址通常用“点分十进制”表示成（a.b.c.d）的形式，其中，a,b,c,d都是0~255之间的十进制整数。例：点分十进IP地址（100.4.5.6），实际上是32位二进制数（01100100.00000100.00000101.00000110）</p>
+<p>假如计算机的IP位址是192.15.156.205，子网掩码是255.255.255.224，<br>先把子网掩码255.255.255.224做 NOT 运算﹐可以得出﹕<br>00000000.00000000.00000000.00011111<br>然后再和IP做一次 OR 运算﹐就可以得到 Broadcast Address:<br>11000000.00001111.10011100.11001101 OR 00000000.00000000.00000000.00011111<br>(192.15.156.205 OR 255.255.255.224)<br>得出﹕ 11000000.00001111.10011100.11011111<br>(192.15.156.223)<br>192.15.156.223就是那个子网的广播地址了. 知道广播地址后就可以以这个地址来发送消息了，局域网的都可以接收到了。</p>
+<p>当网络间进行通信时，如需确定是否在同一网络，则用某台主机的网络号与另一台主机的子网掩码进行与运算，观察网络号与与运算的结果是否相同。<br>其中还有了解下子网掩码，不然还是不知所以,<a href="https://baike.baidu.com/item/%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81/100207?fr=aladdin" target="_blank" rel="noopener">子网掩码</a></p>
+<p><a href="https://blog.csdn.net/Evan_love/article/details/79981574" target="_blank" rel="noopener">参考地址</a><br><a href="https://blog.csdn.net/fwt336/article/details/76538321" target="_blank" rel="noopener">参考地址</a></p>
+<!-- ## 为何不能跨域广播 -->
+<!-- 因为中国网络十分复杂，一层套一层，端口，ip随时会变化。比如你所在的公司为一个局域网 -->
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react-native/" rel="tag"># react-native</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/rn/rn通知封装/" rel="next" title="rn通知">
+                <i class="fa fa-chevron-left"></i> rn通知
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/rn/开发中的一些问题总结/" rel="prev" title="开发中的一些问题总结">
+                开发中的一些问题总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thdqn</p>
+              <div class="site-description motion-element" itemprop="description">thdqn的博客,个人技术笔记</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/yexiang1994" title="GitHub &rarr; https://github.com/yexiang1994" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" title="QQ &rarr; tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.web-jackiee.com/" title="http://www.web-jackiee.com/" rel="noopener" target="_blank">老牛的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xuanmo.xin/" title="https://www.xuanmo.xin/" rel="noopener" target="_blank">轩陌的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单介绍"><span class="nav-number">1.</span> <span class="nav-text">简单介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有的手机接收不到通知"><span class="nav-number">1.1.</span> <span class="nav-text">有的手机接收不到通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全部代码："><span class="nav-number">2.</span> <span class="nav-text">全部代码：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存问题"><span class="nav-number">3.</span> <span class="nav-text">缓存问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#清空缓存方法"><span class="nav-number">3.1.</span> <span class="nav-text">清空缓存方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广播问题"><span class="nav-number">4.</span> <span class="nav-text">广播问题</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thdqn</span>
+
+  
+
+  
+</div>
+
+
+  <span class="author" itemprop="copyrightHolder">认准一件事需要坚持，不抛弃不放弃，加油!</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

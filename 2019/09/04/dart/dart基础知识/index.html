@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="声明 var声明的时候，如果没有初始值，后面可以复制任意类型。如果有初始值，则类型被锁定 使用强类型声明的时候，类型被锁定 123// 如String a = 1;a=&quot;aa&quot;;  //error   3.字符串模板 123String str = &quot;op&quot;;String s1 = &apos;$str 组合&apos;；  // &quot;op 组合&quot;String s2 = &apos;一个大写$&amp;#123;str.toUpperC">
+<meta name="keywords" content="dart">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dart基础知识">
+<meta property="og:url" content="http://thdqn.cn/2019/09/04/dart/dart基础知识/index.html">
+<meta property="og:site_name" content="thdqn">
+<meta property="og:description" content="声明 var声明的时候，如果没有初始值，后面可以复制任意类型。如果有初始值，则类型被锁定 使用强类型声明的时候，类型被锁定 123// 如String a = 1;a=&quot;aa&quot;;  //error   3.字符串模板 123String str = &quot;op&quot;;String s1 = &apos;$str 组合&apos;；  // &quot;op 组合&quot;String s2 = &apos;一个大写$&amp;#123;str.toUpperC">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/14227413-507f8aa433b204db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-09-04T06:48:37.764Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="dart基础知识">
+<meta name="twitter:description" content="声明 var声明的时候，如果没有初始值，后面可以复制任意类型。如果有初始值，则类型被锁定 使用强类型声明的时候，类型被锁定 123// 如String a = 1;a=&quot;aa&quot;;  //error   3.字符串模板 123String str = &quot;op&quot;;String s1 = &apos;$str 组合&apos;；  // &quot;op 组合&quot;String s2 = &apos;一个大写$&amp;#123;str.toUpperC">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/14227413-507f8aa433b204db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://thdqn.cn/2019/09/04/dart/dart基础知识/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>dart基础知识 | thdqn</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thdqn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">thdqn技术博客</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://thdqn.cn/2019/09/04/dart/dart基础知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thdqn">
+      <meta itemprop="description" content="thdqn的博客,个人技术笔记">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thdqn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">dart基础知识
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 14:45:04 / 修改时间：14:48:37" itemprop="dateCreated datePublished" datetime="2019-09-04T14:45:04+08:00">2019-09-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><ol>
+<li>var声明的时候，如果没有初始值，后面可以复制任意类型。如果有初始值，则类型被锁定</li>
+<li>使用强类型声明的时候，类型被锁定 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如</span></span><br><span class="line"><span class="built_in">String</span> a = <span class="number">1</span>;</span><br><span class="line">a=<span class="string">"aa"</span>;  <span class="comment">//error</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>3.字符串模板<br> <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> str = <span class="string">"op"</span>;</span><br><span class="line"><span class="built_in">String</span> s1 = <span class="string">'<span class="subst">$str</span> 组合'</span>；  <span class="comment">// "op 组合"</span></span><br><span class="line"><span class="built_in">String</span> s2 = <span class="string">'一个大写<span class="subst">$&#123;str.toUpperCase()&#125;</span>'</span>; <span class="comment">// "一个大写OP"</span></span><br></pre></td></tr></table></figure></p>
+<p>三个单引号可以断行<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s3 = <span class="string">'''</span></span><br><span class="line"><span class="string">a </span></span><br><span class="line"><span class="string">sd</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
+<p>4.数组list<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="string">"t"</span>,<span class="string">"c"</span>,<span class="string">"d"</span>];  <span class="comment">// 字面量</span></span><br><span class="line"><span class="keyword">var</span> arr2 = <span class="built_in">List</span>.of([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]);  <span class="comment">// 构造函数</span></span><br><span class="line">arr2.add(<span class="number">100</span>);</span><br><span class="line">arr2.forEach((v)=&gt;&#123;&#125;);</span><br><span class="line"><span class="keyword">var</span> map = &#123;<span class="string">"a"</span>, <span class="string">"b"</span>,<span class="string">"c"</span>&#125;; </span><br><span class="line"><span class="keyword">var</span> map2 = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">map2[<span class="string">'name'</span>] = <span class="string">'jack'</span>;</span><br><span class="line">map2[<span class="string">'sex'</span>]=<span class="string">'fame'</span>;</span><br></pre></td></tr></table></figure></p>
+<ol start="5">
+<li>私有变量<br>var _a = “aa”;<br>一切变量初始值都是null， 包括bool</li>
+<li>时间<br>var now = DateTime.now(); // 2019-07-31 16:00:00<br>var d = DateTime(2019,7,31,21,55);<br>now,add(Duration(minutes: 5));  // 加5min<br>d.isAfter(now); // 比较时间先后</li>
+<li><p>Object 和 dynamic</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span> d2；</span><br><span class="line">d2 = <span class="string">"ss"</span>;</span><br><span class="line">d2.test(); <span class="comment">// 执行不存在的方法时 编译的时候报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">dynamic</span> d1;</span><br><span class="line">d1=<span class="string">"aa"</span>;</span><br><span class="line">d1.test(); <span class="comment">// 执行不存在的方法时，运行时报错</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>final  const<br>final,const生命时可以不指定类型，他会自动识别，之后值的类型不能更改<br>9.级联运算符</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> lists = <span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line">lists</span><br><span class="line">..add(<span class="number">1</span>)</span><br><span class="line">..add(<span class="number">2</span>)</span><br><span class="line">..addAll([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>10.set<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> set1 = &#123;<span class="string">"li"</span>,<span class="string">"zhang"</span>&#125;;</span><br><span class="line"> <span class="keyword">var</span> set2=&#123;<span class="string">"li"</span>,<span class="string">"wang"</span>,<span class="string">"ye"</span>&#125;;</span><br><span class="line">  <span class="keyword">var</span> dif1 = set1.difference(set2);</span><br><span class="line">  <span class="built_in">print</span>(dif1); <span class="comment">// &#123;zhang&#125;</span></span><br><span class="line">  <span class="keyword">var</span> dif2 = set2.difference(set1);</span><br><span class="line">  <span class="built_in">print</span>(dif2); <span class="comment">// &#123;wang, ye&#125;</span></span><br><span class="line"><span class="comment">// 交集</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'<span class="subst">$&#123;set1.intersection(set2)&#125;</span>'</span>);  <span class="comment">// &#123;li&#125;</span></span><br><span class="line">  <span class="comment">// 并集</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'<span class="subst">$&#123;set1.union(set2)&#125;</span>'</span>);  <span class="comment">//&#123;li, zhang, wang, ye&#125;</span></span><br></pre></td></tr></table></figure></p>
+<ol start="11">
+<li><p>??=</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> add(&#123;<span class="built_in">int</span> x, <span class="built_in">int</span> y&#125;)&#123;</span><br><span class="line">   x ??=<span class="number">1</span>;  <span class="comment">// 如果x值空则赋值，</span></span><br><span class="line">   y ??= <span class="number">2</span>;</span><br><span class="line">   <span class="keyword">return</span> x+y;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="built_in">print</span>(add(x:<span class="number">2</span>));  <span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重定向构造函数<br>用于初始化的时候</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span></span>&#123;</span><br><span class="line">  <span class="built_in">num</span> x,y;</span><br><span class="line">  Point(<span class="keyword">this</span>.x,<span class="keyword">this</span>.y);</span><br><span class="line">  Point.ar(<span class="built_in">num</span> x):<span class="keyword">this</span>(x,<span class="number">0</span>);</span><br><span class="line">  Point.ui(<span class="built_in">num</span> y):<span class="keyword">this</span>.ar(y);</span><br><span class="line">&#125;</span><br><span class="line">main() &#123;</span><br><span class="line">  Point p = Point.ui(<span class="number">2</span>);</span><br><span class="line">  <span class="built_in">print</span>(p.x); <span class="comment">// 2</span></span><br><span class="line">  <span class="built_in">print</span>(p.y); <span class="comment">// 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>13 dart的mixin<br>Mixin 是复用类代码的一种途径， 复用的类可以在不同层级，之间可以不存在继承关系。<br>通过 with 后面跟一个或多个混入的名称，来 使用 Mixin<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">  a()&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"a.a"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span>&#123;</span><br><span class="line">  a()&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"b.a"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  b()&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"b.b"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> <span class="title">with</span> <span class="title">B</span>,<span class="title">A</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line">main() &#123;</span><br><span class="line">  Point p = Point();</span><br><span class="line">  p.a();  <span class="comment">// a.a</span></span><br><span class="line">  p.b();   <span class="comment">// b.b</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这里混合的时候后面的相同名称的方法覆盖前面的，</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//和extends的一起用的时候也是后面方法会覆盖前面的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;</span><br><span class="line">  a()&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"c.a"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  b()&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"c.b"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  c()&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"c.c"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> <span class="keyword">extends</span> <span class="title">C</span> <span class="title">with</span> <span class="title">B</span>,<span class="title">A</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main() &#123;</span><br><span class="line">  Point p = Point();</span><br><span class="line">  p.a();   <span class="comment">// a.a</span></span><br><span class="line">  p.b();  <span class="comment">//b.b</span></span><br><span class="line">  p.c();      <span class="comment">//c.c</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 但是当前方法里面的函数又会覆盖其他的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> <span class="keyword">extends</span> <span class="title">C</span> <span class="title">with</span> <span class="title">B</span>,<span class="title">A</span></span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  c() &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"p.c"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main() &#123;</span><br><span class="line">  Point p = Point();</span><br><span class="line">  p.a();  <span class="comment">// a.a</span></span><br><span class="line">  p.b(); <span class="comment">//b.b</span></span><br><span class="line">  p.c();   <span class="comment">//p.c    </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>14 异步<br>函数把自己放到队列中，返回一个Future对象，<br>获取Future中的值又两种方法<br>1.async和await<br>2.使用Future接口<br>异步的函数使用的时候都要使用await，而await只能在带有async声明的函数中使用<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Future&lt;<span class="keyword">void</span>&gt; getName() <span class="keyword">async</span>&#123;</span><br><span class="line">  <span class="keyword">await</span> getStr();</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"1"</span>);</span><br><span class="line">&#125;</span><br><span class="line">getStr()&#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"str1"</span>);</span><br><span class="line">&#125;</span><br><span class="line">getStr2()&#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"str2"</span>);</span><br><span class="line">&#125;</span><br><span class="line">main() &#123;</span><br><span class="line">  getName();</span><br><span class="line">  getStr2();</span><br><span class="line"><span class="comment">// str1 </span></span><br><span class="line"><span class="comment">// str2</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// async里面的函数只会执行第一个await，后面会方式时间队列里面去，等到main函数里面的同步任务都执行完了，在去队列里面那到事件在去执行，所以这里为啥是看到的1在后面</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">getStr3()&#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"str3"</span>);</span><br><span class="line">&#125;</span><br><span class="line">getStr4()&#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"str4"</span>);</span><br><span class="line">&#125;</span><br><span class="line">getName() <span class="keyword">async</span>&#123;</span><br><span class="line">  <span class="keyword">await</span> getStr();</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"1"</span>);</span><br><span class="line">  <span class="keyword">await</span> getStr3();</span><br><span class="line">  <span class="keyword">await</span> getStr4();</span><br><span class="line">&#125;</span><br><span class="line">main() &#123;</span><br><span class="line">  getName();</span><br><span class="line">  getStr2();</span><br><span class="line">&#125;![dartevent.png](https:<span class="comment">//upload-images.jianshu.io/upload_images/14227413-1a7c984d6a7ddc0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// str1 </span></span><br><span class="line"><span class="comment">// str2</span></span><br><span class="line"><span class="comment">//1</span></span><br><span class="line"><span class="comment">// str3</span></span><br><span class="line"><span class="comment">// str4</span></span><br><span class="line"><span class="comment">// Future只会执行第一个await，后面会放到事件队列里面去</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Future(()=&gt;<span class="number">2</span>).then((v)=&gt;v*<span class="number">3</span>).then((v)=&gt;<span class="built_in">print</span>(v));  <span class="comment">// 6</span></span><br><span class="line"><span class="comment">//Future执行完有个then可以回调</span></span><br><span class="line"></span><br><span class="line">Future.delayed(<span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">5</span>), () &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"delayed"</span>);</span><br><span class="line">&#125;);  <span class="comment">//五秒钟后执行</span></span><br></pre></td></tr></table></figure>
+<p>1.被添加到then里面的方法，会在future执行后立马执行（这个方法没有被加入到任何队列里面，只是被回调了）<br>2.如果在then调用之前，Future已经执行完毕，那么就有会有个任务 会被加入到microtask里面，这个任务就是被传入then里面的方法<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//比如</span></span><br><span class="line"><span class="keyword">var</span> fn = Future(()=&gt;<span class="number">2</span>).then((v)=&gt;v*<span class="number">2</span>);</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 中间还有很多方法</span></span><br><span class="line">fn.then((v)=&gt;<span class="built_in">print</span>(v));  <span class="comment">//这里的then会被放到微任务里面，优先执行</span></span><br></pre></td></tr></table></figure></p>
+<p>3.Future和Future.delayed 构造方法并不会立刻完成<br>4.Future.value() 会在微任务中完成</p>
+<p>Future捕获异常<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Future(()=&gt;<span class="number">1</span>)</span><br><span class="line">  .then(<span class="built_in">print</span>)</span><br><span class="line">  .then((_)=&gt;Future.error(<span class="string">"error"</span>))</span><br><span class="line">  .whenComplete(()=&gt;<span class="built_in">print</span>(<span class="string">"finish"</span>))</span><br><span class="line">  .catchError(<span class="built_in">print</span>);</span><br><span class="line"><span class="comment">// 处理错误</span></span><br><span class="line">.catchError(<span class="built_in">print</span>, test:(<span class="built_in">Object</span> o)&#123;</span><br><span class="line">  <span class="built_in">print</span>(o);</span><br><span class="line"><span class="keyword">return</span> ture; <span class="comment">// 这里返回true 表面错误被处理了，</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>一个dart又一个消息循环和两个消息队列<br>1.Event（事件）队列：i/o， 鼠标事件，键盘事件，绘制事件，定时器，isolate之间的message<br>2.microtask （微任务）队列：只包含当前的isolate隔离的代码<br>而microtask 优先级比event优先级高<br>执行顺序如下图</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/14227413-507f8aa433b204db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="dartevent.png"></p>
+<p>先从执行函数里面的所有同步方法，然后有微任务执行微任务，微任务里面有event事件的把event事件放到事件队列里面去，等待微任务执行完再去执行event事件，然后依次循环，直到所有事件全部执行完毕</p>
+<p>scheduleMicrotask 添加一个微任务</p>
+<p>练习<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">testFu()&#123;</span><br><span class="line">  Future f = <span class="keyword">new</span> Future(()=&gt;<span class="built_in">print</span>(<span class="string">"1"</span>));</span><br><span class="line">  Future f1 = <span class="keyword">new</span> Future(()=&gt;<span class="keyword">null</span>);</span><br><span class="line">  Future f2 = <span class="keyword">new</span> Future(()=&gt;<span class="keyword">null</span>);</span><br><span class="line">  Future f3 = <span class="keyword">new</span> Future(()=&gt;<span class="keyword">null</span>);</span><br><span class="line">  f3.then((_)=&gt;<span class="built_in">print</span>(<span class="string">"2"</span>));</span><br><span class="line">  f2.then((_)&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"3"</span>);</span><br><span class="line">    <span class="keyword">new</span> Future(()=&gt;<span class="built_in">print</span>(<span class="string">"4"</span>));</span><br><span class="line">    f1.then((_)&#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">"5"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  f1.then((m)&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"6"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"7"</span>);</span><br><span class="line">&#125;</span><br><span class="line">main(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args) &#123;</span><br><span class="line">  testFu();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>分析：按照上表的，先执行main函数里面的方法，所以 7优先打印，new Future都放到了事件队列里面，然后按照从上到下的执行顺序， f1优先被执行，执行后直接直接then方法，不带间隔的，所以接下来是 打印6，然后是f2函数执行，打印了3.因为f1之前已经执行了，他的then被放到微任务里面了，所以这里3打印后会直接执行f1.then, 然后打印5，此时f2里面的新Future又被放到的时间队列的最后面，要等f3执行完成后才能轮到他执行，所以结果是 7163524</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"dart:async"</span>;</span><br><span class="line">testFu()&#123;</span><br><span class="line">  scheduleMicrotask(()=&gt;<span class="built_in">print</span>(<span class="string">"1"</span>));</span><br><span class="line">  <span class="keyword">var</span> f1 = <span class="keyword">new</span> Future.delayed(<span class="keyword">new</span> <span class="built_in">Duration</span>(seconds: <span class="number">1</span>), ()=&gt;<span class="built_in">print</span>(<span class="string">"2"</span>));</span><br><span class="line">  <span class="keyword">var</span> f2 = <span class="keyword">new</span> Future(()=&gt;<span class="built_in">print</span>(<span class="string">"3"</span>)).then((_)&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"4"</span>);</span><br><span class="line">    scheduleMicrotask(()=&gt;<span class="built_in">print</span>(<span class="string">"5"</span>));</span><br><span class="line">  &#125;).then((_)=&gt;<span class="built_in">print</span>(<span class="string">"6"</span>));</span><br><span class="line">  <span class="keyword">var</span> f3 = <span class="keyword">new</span> Future(()=&gt;<span class="built_in">print</span>(<span class="string">"7"</span>));</span><br><span class="line">  scheduleMicrotask(()=&gt;<span class="built_in">print</span>(<span class="string">"8"</span>));</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"9"</span>);</span><br><span class="line">&#125;</span><br><span class="line">main(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args) &#123;</span><br><span class="line">  testFu();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析：先执行函数里面的同步方法，所以先打印9，然后里面添加了两个微任务，主函数方法执行完后就去找微任务队列，一次打印1，8，然后执行事件队列里面的Future方法，f1延迟1秒，所以放在了最后，f2打印3,4，然后里面又创建了个微任务，把微任务扔进微任务队列，继续执行then，所以是6，这里的事件执行完后就把微任务拿出来执行完，打印5，然后这个事件函数里面的所有方法执行完了，然后在执行下一个事件队列里的函数</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/dart/" rel="tag"># dart</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/计算机基础/基础知识/" rel="next" title="基础知识">
+                <i class="fa fa-chevron-left"></i> 基础知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/java/java类和JSON之间的转换/" rel="prev" title="java基础知识">
+                java基础知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thdqn</p>
+              <div class="site-description motion-element" itemprop="description">thdqn的博客,个人技术笔记</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/yexiang1994" title="GitHub &rarr; https://github.com/yexiang1994" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" title="QQ &rarr; tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.web-jackiee.com/" title="http://www.web-jackiee.com/" rel="noopener" target="_blank">老牛的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xuanmo.xin/" title="https://www.xuanmo.xin/" rel="noopener" target="_blank">轩陌的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#声明"><span class="nav-number">1.</span> <span class="nav-text">声明</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thdqn</span>
+
+  
+
+  
+</div>
+
+
+  <span class="author" itemprop="copyrightHolder">认准一件事需要坚持，不抛弃不放弃，加油!</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

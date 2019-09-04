@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一 调用地图功能主方法123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899">
+<meta name="keywords" content="react-native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react-native一些好用的插件">
+<meta property="og:url" content="http://thdqn.cn/2019/09/04/react-native一些好用的原生插件/index.html">
+<meta property="og:site_name" content="thdqn">
+<meta property="og:description" content="一 调用地图功能主方法123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-04T06:36:51.756Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="react-native一些好用的插件">
+<meta name="twitter:description" content="一 调用地图功能主方法123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://thdqn.cn/2019/09/04/react-native一些好用的原生插件/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>react-native一些好用的插件 | thdqn</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thdqn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">thdqn技术博客</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://thdqn.cn/2019/09/04/react-native一些好用的原生插件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thdqn">
+      <meta itemprop="description" content="thdqn的博客,个人技术笔记">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thdqn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">react-native一些好用的插件
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 14:36:51" itemprop="dateCreated datePublished" datetime="2019-09-04T14:36:51+08:00">2019-09-04</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-调用地图功能"><a href="#一-调用地图功能" class="headerlink" title="一 调用地图功能"></a>一 调用地图功能</h2><h3 id="主方法"><a href="#主方法" class="headerlink" title="主方法"></a>主方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.apps.maputil;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Intent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.net.Uri;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.pm.PackageInfo;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactContextBaseJavaModule;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.Callback;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.WritableNativeArray;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.WritableNativeMap;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactMethod;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.WritableArray;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UtilMap</span> <span class="keyword">extends</span> <span class="title">ReactContextBaseJavaModule</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UtilMap</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(reactContext);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"UtilMap"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    检查手机是否安装了相应的地图app。返回的数据格式为:[&#123;title:'xxx'url:app地图的URL&#125;,&#123;title:'xxx'url:app地图的URL&#125;,&#123;title:'xxx'url:app地图的URL&#125;]</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findEvents</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">            String lon,</span></span></span><br><span class="line"><span class="function"><span class="params">            String lat,</span></span></span><br><span class="line"><span class="function"><span class="params">            String address,</span></span></span><br><span class="line"><span class="function"><span class="params">            Callback successCallback)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"> </span><br><span class="line">        WritableArray array = <span class="keyword">new</span> WritableNativeArray();</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//百度地图app检测</span></span><br><span class="line">        <span class="keyword">if</span> (isInstalled(getReactApplicationContext(), <span class="string">"com.baidu.BaiduMap"</span>)) &#123;</span><br><span class="line">            WritableNativeMap writableNativeMap = <span class="keyword">new</span> WritableNativeMap();</span><br><span class="line">            writableNativeMap.putString(<span class="string">"title"</span>, <span class="string">"百度地图"</span>);</span><br><span class="line">            writableNativeMap.putString(<span class="string">"url"</span>, <span class="string">"baidumap://map/direction?origin=我的位置&amp;destination=name:"</span> +address+<span class="string">"|latlng:"</span>+ lat+<span class="string">","</span>+lon + <span class="string">"&amp;mode=driving&amp;coord_type=bd09ll"</span>);</span><br><span class="line">            array.pushMap(writableNativeMap);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//高德地图app检测</span></span><br><span class="line">        <span class="keyword">if</span> (isInstalled(getReactApplicationContext(), <span class="string">"com.autonavi.minimap"</span>)) &#123;</span><br><span class="line">            WritableNativeMap writableNativeMap = <span class="keyword">new</span> WritableNativeMap();</span><br><span class="line">            writableNativeMap.putString(<span class="string">"title"</span>, <span class="string">"高德地图"</span>);</span><br><span class="line">            writableNativeMap.putString(<span class="string">"url"</span>, <span class="string">"androidamap://navi?sourceApplication=导航功能&amp;backScheme=nav123456&amp;lat="</span> + lat + <span class="string">"&amp;lon="</span> + lon + <span class="string">"&amp;dev=0&amp;style=2"</span>);</span><br><span class="line">            array.pushMap(writableNativeMap);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//腾讯地图app检测</span></span><br><span class="line">        <span class="keyword">if</span> (isInstalled(getReactApplicationContext(), <span class="string">"com.tencent.map"</span>)) &#123;</span><br><span class="line">            WritableNativeMap writableNativeMap = <span class="keyword">new</span> WritableNativeMap();</span><br><span class="line">            writableNativeMap.putString(<span class="string">"title"</span>, <span class="string">"腾讯地图"</span>);</span><br><span class="line">            writableNativeMap.putString(<span class="string">"url"</span>, <span class="string">"qqmap://map/routeplan?from=我的位置&amp;type=drive&amp;tocoord="</span> + lat + <span class="string">","</span> + lon + <span class="string">"&amp;to="</span> + address + <span class="string">"&amp;coord_type=1&amp;policy=0"</span>);</span><br><span class="line">            array.pushMap(writableNativeMap);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        WritableNativeMap writableNativeMap = <span class="keyword">new</span> WritableNativeMap();</span><br><span class="line">        writableNativeMap.putString(<span class="string">"title"</span>, <span class="string">"取消"</span>);</span><br><span class="line">        writableNativeMap.putString(<span class="string">"url"</span>, <span class="string">""</span>);</span><br><span class="line">        array.pushMap(writableNativeMap);</span><br><span class="line"> </span><br><span class="line">        successCallback.invoke(array);</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 查看是否安装了地图软件</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isInstalled</span><span class="params">(Context context, String name)</span> </span>&#123;</span><br><span class="line">        PackageInfo packageInfo;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            packageInfo = context.getPackageManager().getPackageInfo(name, <span class="number">0</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            packageInfo = <span class="keyword">null</span>;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span> (packageInfo == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    外部调用，打开对应app，title：地址的名称</span></span><br><span class="line"><span class="comment">    url：`baidumap://map/direction?origin=我的位置&amp;destination=name:$&#123;name&#125;|latlng:$&#123;lat&#125;,$&#123;lon&#125;&amp;mode=driving&amp;coord_type=bd09ll`</span></span><br><span class="line"><span class="comment">        `androidamap://navi?sourceApplication=导航功能&amp;backScheme=nav123456&amp;lat=$&#123;lat&#125;&amp;lon=$&#123;lon&#125;&amp;dev=0&amp;style=2`</span></span><br><span class="line"><span class="comment">        `qqmap://map/routeplan?from=我的位置&amp;type=drive&amp;tocoord=$&#123;lat&#125;,$&#123;lon&#125;&amp;to=$&#123;name&#125;&amp;coord_type=1&amp;policy=0`</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openApp</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//打开对应的app</span></span><br><span class="line">        <span class="keyword">if</span>(!url.equals(<span class="string">""</span>))&#123;</span><br><span class="line">            Intent i1 = <span class="keyword">new</span> Intent();</span><br><span class="line">            i1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">            i1.setData(Uri.parse(url));</span><br><span class="line">            getReactApplicationContext().startActivity(i1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="添加主方法"><a href="#添加主方法" class="headerlink" title="添加主方法"></a>添加主方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apps.maputil;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.ReactPackage;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.NativeModule;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.uimanager.ViewManager;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Collections;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> com.apps.maputil.UtilMap;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UtilMapPackage</span> <span class="keyword">implements</span> <span class="title">ReactPackage</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;ViewManager&gt; <span class="title">createViewManagers</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Collections.emptyList();</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;NativeModule&gt; <span class="title">createNativeModules</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">    List&lt;NativeModule&gt; modules = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"> </span><br><span class="line">    modules.add(<span class="keyword">new</span> UtilMap(reactContext));</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> modules;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="然后在MainApplication-java中添加-UtilMapPackage"><a href="#然后在MainApplication-java中添加-UtilMapPackage" class="headerlink" title="然后在MainApplication.java中添加 UtilMapPackage"></a>然后在MainApplication.java中添加 UtilMapPackage</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> List&lt;ReactPackage&gt; <span class="title">getPackages</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Arrays.&lt;ReactPackage&gt;asList(</span><br><span class="line">        <span class="keyword">new</span> MainReactPackage(),</span><br><span class="line">        <span class="keyword">new</span> UtilMapPackage(),</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法的调用"><a href="#方法的调用" class="headerlink" title="方法的调用"></a>方法的调用</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;NativeModules&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> UtilMapManager = NativeModules.UtilMap;</span><br><span class="line"></span><br><span class="line">UtilMapManager.openApp(url);</span><br><span class="line"></span><br><span class="line">UtilMapManager.findEvents(lon, lat, title, (events) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (events.length &lt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> Alert.alert(<span class="string">'请下载百度地图app'</span>,<span class="string">''</span>, [</span><br><span class="line">            &#123; <span class="attr">text</span>: <span class="string">'确定'</span>, <span class="attr">onPress</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125; &#125;,</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="二-获取精确的地理位置"><a href="#二-获取精确的地理位置" class="headerlink" title="二 获取精确的地理位置"></a>二 获取精确的地理位置</h2><h3 id="获取地理位置主代码"><a href="#获取地理位置主代码" class="headerlink" title="获取地理位置主代码"></a>获取地理位置主代码</h3><p>获取地理位置这个必须在主函数里面写，因为ActivityCompat.requestPermissions函数调用参数包含 Activity活动对象，这个对象必须实例化，被调用了才行，不然运行不了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apps;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.pm.PackageManager;</span><br><span class="line"><span class="keyword">import</span> android.location.GpsStatus;</span><br><span class="line"><span class="keyword">import</span> android.location.Location;</span><br><span class="line"><span class="keyword">import</span> android.location.LocationListener;</span><br><span class="line"><span class="keyword">import</span> android.location.LocationManager;</span><br><span class="line"><span class="keyword">import</span> android.location.LocationProvider;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.support.v4.app.ActivityCompat;</span><br><span class="line"><span class="keyword">import</span> android.support.v4.content.PermissionChecker;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.facebook.react.ReactActivity;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.WritableMap;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.WritableNativeMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">ReactActivity</span> <span class="keyword">implements</span> <span class="title">LocationListener</span>,<span class="title">GpsStatus</span>.<span class="title">NmeaListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LocationManager locationManager;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"GpsActivity"</span>;</span><br><span class="line">    <span class="keyword">private</span> String mProvider = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MY_PERMISSION_ACCESS_COURSE_LOCATION = <span class="number">11</span>;</span><br><span class="line">    <span class="keyword">public</span> String pointList;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> MainActivity mainActivity;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getlocationGps</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//此处的判定是主要问题，API23之后需要先判断之后才能调用locationManager中的方法</span></span><br><span class="line">        <span class="comment">//包括这里的getLastKnewnLocation方法和requestLocationUpdates方法</span></span><br><span class="line">        <span class="keyword">if</span>(PermissionChecker.checkSelfPermission(<span class="keyword">this</span>,android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">            <span class="comment">//获取定位服务</span></span><br><span class="line">            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);</span><br><span class="line">            <span class="comment">//获取当前可用的位置控制器</span></span><br><span class="line">            List&lt;String&gt; list = locationManager.getProviders(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (list.contains(LocationManager.GPS_PROVIDER)) &#123;</span><br><span class="line">                <span class="comment">//是否为GPS位置控制器</span></span><br><span class="line">                Log.d(TAG,<span class="string">"1"</span>);</span><br><span class="line">                mProvider = LocationManager.GPS_PROVIDER;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (list.contains(LocationManager.NETWORK_PROVIDER)) &#123;</span><br><span class="line">                Log.d(TAG,<span class="string">"2"</span>);</span><br><span class="line">                <span class="comment">//是否为网络位置控制器</span></span><br><span class="line">                mProvider = LocationManager.NETWORK_PROVIDER;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Log.d(TAG,<span class="string">"3"</span>);</span><br><span class="line">                Toast.makeText(<span class="keyword">this</span>, <span class="string">"请检查网络或GPS是否打开"</span>,</span><br><span class="line">                        Toast.LENGTH_LONG).show();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            Location location = locationManager.getLastKnownLocation(mProvider);</span><br><span class="line">            <span class="keyword">if</span> (location != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">//获取当前位置，这里只用到了经纬度</span></span><br><span class="line"><span class="comment">//                String string = "纬度为：" + location.getLatitude() + ",经度为："</span></span><br><span class="line"><span class="comment">//                        + location.getLongitude();</span></span><br><span class="line"><span class="comment">//                updateView(location);</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                Log.d(TAG,<span class="string">"location is null"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//绑定定位事件，监听位置是否改变</span></span><br><span class="line">            <span class="comment">//第一个参数为控制器类型第二个参数为监听位置变化的时间间隔（单位：毫秒）</span></span><br><span class="line">            <span class="comment">//第三个参数为位置变化的间隔（单位：米）第四个参数为位置监听器</span></span><br><span class="line">            locationManager.requestLocationUpdates(mProvider, <span class="number">10</span>*<span class="number">1000</span>, <span class="number">2</span>, <span class="keyword">this</span>);</span><br><span class="line">            locationManager.addNmeaListener(<span class="keyword">this</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.d(TAG,<span class="string">"not good"</span>);</span><br><span class="line">            ActivityCompat.requestPermissions( <span class="keyword">this</span>, <span class="keyword">new</span> String[] &#123;  android.Manifest.permission.ACCESS_FINE_LOCATION &#125;,</span><br><span class="line">                    MY_PERMISSION_ACCESS_COURSE_LOCATION );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// gps状态改变时</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStatusChanged</span><span class="params">(String provider, <span class="keyword">int</span> status, Bundle extras)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (status) &#123;</span><br><span class="line">            <span class="comment">//GPS状态为可见时</span></span><br><span class="line">            <span class="keyword">case</span> LocationProvider.AVAILABLE:</span><br><span class="line">                Log.i(TAG, <span class="string">"当前GPS状态为可见状态"</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="comment">//GPS状态为服务区外时</span></span><br><span class="line">            <span class="keyword">case</span> LocationProvider.OUT_OF_SERVICE:</span><br><span class="line">                Log.i(TAG, <span class="string">"当前GPS状态为服务区外状态"</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="comment">//GPS状态为暂停服务时</span></span><br><span class="line">            <span class="keyword">case</span> LocationProvider.TEMPORARILY_UNAVAILABLE:</span><br><span class="line">                Log.i(TAG, <span class="string">"当前GPS状态为暂停服务状态"</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProviderEnabled</span><span class="params">(String provider)</span> </span>&#123;</span><br><span class="line">        Log.d(TAG,<span class="string">"in providerEnabled"</span>);</span><br><span class="line">        getlocationGps();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProviderDisabled</span><span class="params">(String provider)</span> </span>&#123;</span><br><span class="line">        Log.d(TAG,<span class="string">"in providerDisabled"</span>);</span><br><span class="line"><span class="comment">//        updateView(null);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line"><span class="comment">//        stopGPS();</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequestPermissionsResult</span><span class="params">(<span class="keyword">int</span> requestCode, String[] permissions, <span class="keyword">int</span>[] grantResults)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onRequestPermissionsResult(requestCode, permissions, grantResults);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (requestCode) &#123;</span><br><span class="line">            <span class="keyword">case</span> MY_PERMISSION_ACCESS_COURSE_LOCATION: &#123;</span><br><span class="line">                <span class="keyword">if</span> (grantResults.length &gt; <span class="number">0</span></span><br><span class="line">                        &amp;&amp; grantResults[<span class="number">0</span>] == PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line"></span><br><span class="line">                    Log.d(TAG,<span class="string">"permission good"</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    Log.d(TAG,<span class="string">"permission denied"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNmeaReceived</span><span class="params">(<span class="keyword">long</span> timestamp, String nmea)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        Log.d(TAG, nmea);</span></span><br><span class="line">        <span class="keyword">if</span>((nmea.contains(<span class="string">"GNRMC"</span>)|| nmea.contains(<span class="string">"GPRMC"</span>))&amp;&amp; nmea.length()&gt;<span class="number">40</span>)&#123;</span><br><span class="line">            String [] array = nmea.split(<span class="string">","</span>);</span><br><span class="line">            <span class="keyword">if</span>(array.length &gt; <span class="number">6</span>)&#123;</span><br><span class="line">                String a = array[<span class="number">3</span>];</span><br><span class="line">                String b = array[<span class="number">5</span>];</span><br><span class="line">                <span class="keyword">int</span> aInt = Integer.parseInt(a.substring(<span class="number">0</span>, a.indexOf(<span class="string">"."</span>) - <span class="number">2</span>));</span><br><span class="line">                <span class="keyword">int</span> bInt = Integer.parseInt(b.substring(<span class="number">0</span>, b.indexOf(<span class="string">"."</span>) - <span class="number">2</span>));</span><br><span class="line">                <span class="keyword">double</span> aRes = Double.parseDouble(a.substring(a.indexOf(<span class="string">"."</span>) - <span class="number">2</span>));</span><br><span class="line">                <span class="keyword">double</span> bRes = Double.parseDouble(b.substring(b.indexOf(<span class="string">"."</span>) - <span class="number">2</span>));</span><br><span class="line">                <span class="keyword">double</span> aFinal = (<span class="keyword">double</span>)aInt + aRes / <span class="number">60</span>;</span><br><span class="line">                <span class="keyword">double</span> bFinal = (<span class="keyword">double</span>)bInt + bRes / <span class="number">60</span>;</span><br><span class="line">                pointList = aFinal + <span class="string">","</span> + bFinal;</span><br><span class="line">                Log.i(TAG, aFinal + <span class="string">"  "</span> + bFinal);</span><br><span class="line"><span class="comment">//                gpsService.create(deviceId, bFinal, aFinal, str);</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLocationChanged</span><span class="params">(Location location)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        updateView(location);</span></span><br><span class="line">        Log.i(TAG, <span class="string">"时间："</span>+location.getTime());</span><br><span class="line">        Log.i(TAG, <span class="string">"经度："</span>+location.getLongitude());</span><br><span class="line">        Log.i(TAG, <span class="string">"纬度："</span>+location.getLatitude());</span><br><span class="line">        Log.i(TAG, <span class="string">"海拔："</span>+location.getAltitude());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        mainActivity = <span class="keyword">this</span>;</span><br><span class="line"><span class="comment">//        getlocationGps();</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">getMainComponentName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"apps"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="添加地理位置函数"><a href="#添加地理位置函数" class="headerlink" title="添加地理位置函数"></a>添加地理位置函数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.apps.gpsutil;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.pm.PackageManager;</span><br><span class="line"><span class="keyword">import</span> android.location.Criteria;</span><br><span class="line"><span class="keyword">import</span> android.location.Location;</span><br><span class="line"><span class="keyword">import</span> android.location.LocationListener;</span><br><span class="line"><span class="keyword">import</span> android.location.LocationManager;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.support.v4.app.ActivityCompat;</span><br><span class="line"><span class="keyword">import</span> android.support.v4.content.PermissionChecker;</span><br><span class="line"><span class="keyword">import</span> android.telecom.Call;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.apps.MainActivity;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactContextBaseJavaModule;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactMethod;</span><br><span class="line"><span class="keyword">import</span> com.facebook.react.bridge.Callback;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetLocation</span> <span class="keyword">extends</span> <span class="title">ReactContextBaseJavaModule</span></span>&#123;</span><br><span class="line">    ReactApplicationContext context;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"GpsActivity"</span>;</span><br><span class="line">    <span class="keyword">private</span> LocationManager locationManager;</span><br><span class="line">    <span class="keyword">private</span> String mProvider = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">public</span> Location locations;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MY_PERMISSION_ACCESS_COURSE_LOCATION = <span class="number">11</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">GetLocation</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(reactContext);</span><br><span class="line">        context = reactContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Gps"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startLocation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// rn里调用这个函数 ，然后在调用主函数里面的方法打开gps</span></span><br><span class="line">        MainActivity.mainActivity.getlocationGps();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getLocation</span><span class="params">(Callback cal)</span> </span>&#123;</span><br><span class="line">        cal.invoke(MainActivity.mainActivity.pointList);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="添加到主函数"><a href="#添加到主函数" class="headerlink" title="添加到主函数"></a>添加到主函数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> List&lt;ReactPackage&gt; <span class="title">getPackages</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Arrays.&lt;ReactPackage&gt;asList(</span><br><span class="line">        <span class="keyword">new</span> MainReactPackage(),</span><br><span class="line">        <span class="keyword">new</span> GpsPackage()</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NativeModules.Gps.startLocation()</span><br><span class="line"></span><br><span class="line">NativeModules.Gps.getLocation(<span class="function"><span class="params">rs</span>=&gt;</span>&#123;&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react-native/" rel="tag"># react-native</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/tomcat/" rel="next" title="tomcat相关配置">
+                <i class="fa fa-chevron-left"></i> tomcat相关配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/基础知识/" rel="prev" title="基础知识">
+                基础知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thdqn</p>
+              <div class="site-description motion-element" itemprop="description">thdqn的博客,个人技术笔记</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/yexiang1994" title="GitHub &rarr; https://github.com/yexiang1994" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" title="QQ &rarr; tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.web-jackiee.com/" title="http://www.web-jackiee.com/" rel="noopener" target="_blank">老牛的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xuanmo.xin/" title="https://www.xuanmo.xin/" rel="noopener" target="_blank">轩陌的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-调用地图功能"><span class="nav-number">1.</span> <span class="nav-text">一 调用地图功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主方法"><span class="nav-number">1.1.</span> <span class="nav-text">主方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加主方法"><span class="nav-number">1.2.</span> <span class="nav-text">添加主方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#然后在MainApplication-java中添加-UtilMapPackage"><span class="nav-number">1.3.</span> <span class="nav-text">然后在MainApplication.java中添加 UtilMapPackage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法的调用"><span class="nav-number">1.4.</span> <span class="nav-text">方法的调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-获取精确的地理位置"><span class="nav-number">2.</span> <span class="nav-text">二 获取精确的地理位置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取地理位置主代码"><span class="nav-number">2.1.</span> <span class="nav-text">获取地理位置主代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加地理位置函数"><span class="nav-number">2.2.</span> <span class="nav-text">添加地理位置函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加到主函数"><span class="nav-number">2.3.</span> <span class="nav-text">添加到主函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数调用"><span class="nav-number">2.4.</span> <span class="nav-text">函数调用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thdqn</span>
+
+  
+
+  
+</div>
+
+
+  <span class="author" itemprop="copyrightHolder">认准一件事需要坚持，不抛弃不放弃，加油!</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

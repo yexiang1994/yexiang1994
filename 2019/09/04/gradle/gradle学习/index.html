@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="开发rn的时候发现android一直用的是gradle构建的，不明白其中意思所有就学一下gradle是用groovy语言编写的所以先学下groovy吧 先来看下普通初始化构建的gradle项目里面的文件gradle构建脚本默认都有个project实例123456789101112131415161718group &apos;com.test.gradle&apos;version &apos;1.0-SNAPSHOT&apos; //">
+<meta name="keywords" content="gradle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gradle学习">
+<meta property="og:url" content="http://thdqn.cn/2019/09/04/gradle/gradle学习/index.html">
+<meta property="og:site_name" content="thdqn">
+<meta property="og:description" content="开发rn的时候发现android一直用的是gradle构建的，不明白其中意思所有就学一下gradle是用groovy语言编写的所以先学下groovy吧 先来看下普通初始化构建的gradle项目里面的文件gradle构建脚本默认都有个project实例123456789101112131415161718group &apos;com.test.gradle&apos;version &apos;1.0-SNAPSHOT&apos; //">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-06T08:14:36.149Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gradle学习">
+<meta name="twitter:description" content="开发rn的时候发现android一直用的是gradle构建的，不明白其中意思所有就学一下gradle是用groovy语言编写的所以先学下groovy吧 先来看下普通初始化构建的gradle项目里面的文件gradle构建脚本默认都有个project实例123456789101112131415161718group &apos;com.test.gradle&apos;version &apos;1.0-SNAPSHOT&apos; //">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://thdqn.cn/2019/09/04/gradle/gradle学习/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>gradle学习 | thdqn</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thdqn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">thdqn技术博客</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://thdqn.cn/2019/09/04/gradle/gradle学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thdqn">
+      <meta itemprop="description" content="thdqn的博客,个人技术笔记">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thdqn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">gradle学习
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 14:37:55" itemprop="dateCreated datePublished" datetime="2019-09-04T14:37:55+08:00">2019-09-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-06 16:14:36" itemprop="dateModified" datetime="2019-06-06T16:14:36+08:00">2019-06-06</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>开发rn的时候发现android一直用的是gradle构建的，不明白其中意思所有就学一下<br>gradle是用groovy语言编写的<br>所以先学下groovy吧</p>
+<p>先来看下普通初始化构建的gradle项目里面的文件<br>gradle构建脚本默认都有个project实例<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">group <span class="string">'com.test.gradle'</span></span><br><span class="line"></span><br><span class="line">version <span class="string">'1.0-SNAPSHOT'</span> <span class="comment">// 为project里面的属性</span></span><br><span class="line"></span><br><span class="line">apply <span class="string">plugin:</span> <span class="string">'java'</span></span><br><span class="line"><span class="comment">// projcet里面的apply的方法可以 即调用 apply(plugin:'java') 方法</span></span><br><span class="line">apply <span class="string">plugin:</span> <span class="string">'war'</span> <span class="comment">// 在ide会自动生成war包</span></span><br><span class="line"></span><br><span class="line">sourceCompatibility = <span class="number">1.8</span></span><br><span class="line"></span><br><span class="line">repositories &#123;</span><br><span class="line">    mavenCentral()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    <span class="comment">//下面声明的是gradle插件的版本</span></span><br><span class="line">    testCompile <span class="string">group:</span> <span class="string">'junit'</span>, <span class="string">name:</span> <span class="string">'junit'</span>, <span class="string">version:</span> <span class="string">'4.12'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>属性 group，name，version唯一确定一个项目<br>方法 apply，dependencies，repositories（指定仓库），task（声明项目有那些任务）<br>属性的其他配置方式：ext,gradle.properties</p>
+<p>任务（rask）<br>任务对应org.gradle.api.Task 主要包括任务动作和任务依赖，任务动作定义了一个最小的工作单元，可以定义依赖于其他任务，动作序列和执行条件。<br>里面的方法有：<br>dependsOn声明任务依赖<br>doFirst (动作任务列表前面添加任务),doLast&lt;&lt;（动作列表后面添加任务）  </p>
+<p>实现创建目录的任务<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> createDir=&#123;</span><br><span class="line">    path -&gt;</span><br><span class="line">        File dir=<span class="keyword">new</span> File(path)</span><br><span class="line">        <span class="keyword">if</span>(!dir.exists())&#123;</span><br><span class="line">            dir.mkdir();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 任务一</span></span><br><span class="line">task makeJavaDir()&#123;</span><br><span class="line">    <span class="keyword">def</span> paths = [<span class="string">'sec/main/java'</span>,<span class="string">'src/main/resources'</span>,<span class="string">'src/test/java'</span>];</span><br><span class="line">    doFirst&#123;</span><br><span class="line">        paths.forEach(createDir);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 任务一</span></span><br><span class="line">task makeWebDir()&#123;</span><br><span class="line">    dependsOn(<span class="string">'makeJavaDir'</span>)  <span class="comment">// 声明此任务依赖makejavadir任务</span></span><br><span class="line">    <span class="keyword">def</span> paths=[<span class="string">'src/main/webapp'</span>,<span class="string">'src/test/webapp'</span>];</span><br><span class="line">    doLast &#123;</span><br><span class="line">        paths.forEach(createDir)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>常用仓库<br>mavenLocal (本地仓库)/mavenCentral（远程仓库）/jcenter<br>依赖的传递性<br>b依赖a，如果c依赖b，那么c就依赖a</p>
+</li>
+<li><p>依赖阶段配置<br>compile编译阶段 runtime运行阶段<br>testCompile  testRuntime</p>
+</li>
+</ul>
+<ul>
+<li>解决冲突<br>  查看依赖报告<br>  排除传递性依赖<br>  强制一个版本</li>
+<li><p>修改默认解决策略</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//发现版本冲突就使他构建失败,可以清楚的看到版本冲突</span></span><br><span class="line">configurations.all&#123;</span><br><span class="line">    resolutionStrategy&#123;</span><br><span class="line">        failOnVersionConflict()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>排除传递性依赖</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 把hibernate里面依赖的slf4j的包给排除掉，引用本项目的</span></span><br><span class="line">compile(<span class="string">"org.hibernate:hibernate-core:3.6.3.Final"</span>)&#123;</span><br><span class="line">    exclude <span class="string">group:</span> <span class="string">"org.slf4j"</span>, <span class="string">module:</span><span class="string">"slf4j-api"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制指定一个版本</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 强制指定一个最高版本的slf4j</span></span><br><span class="line">configurations.all&#123;</span><br><span class="line">    resolutionStrategy&#123;</span><br><span class="line">        force <span class="string">'org.slf4j:slf4j-api:1.7.24'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>本地组件互相依赖的配置</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation project(<span class="string">":todoItem"</span>)  <span class="comment">// todoItem是项目的最后一个名词如com.app.todoItem</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在settings.gradle 里面引入所有的子项目<br>rootProject.name=’todo’<br>include ‘todoItem’<br>include ‘domain’</p>
+<ul>
+<li><p>统一配置java插件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    <span class="comment">// 所有项目都用到了java插件，和指定的java1.8版本，子项目里面的build.gradle里面就可以删除这两句话，而在主项目里面统一配置</span></span><br><span class="line">    apply <span class="string">plugin:</span> <span class="string">'java'</span> </span><br><span class="line">    sourceCompatibility = <span class="number">1.8</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>统一添加日志组件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">subprojects &#123;</span><br><span class="line">    <span class="comment">// 把repositories和dependencies加载的资源合并在subprojects方法里面，</span></span><br><span class="line">    <span class="comment">// 供子组件一起使用，子组件就不需要在配置这些东西了</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        implementation <span class="string">'org.hibernate:hibernate-core:3.6.3.Final'</span></span><br><span class="line">        implementation <span class="string">'org.log4s:log4s-testing_sjs0.6_2.13.0-M5:1.7.0'</span></span><br><span class="line">        testRuntime <span class="string">group:</span> <span class="string">'junit'</span>, <span class="string">name:</span> <span class="string">'junit'</span>, <span class="string">version:</span> <span class="string">'4.12'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>统一配置group和version<br>再根目录里面创建gradle.properties文件，在文件里面提出<br>group ‘com.todo’<br>version ‘1.0-SNAPSHOT’<br>全部组件就都是这个名称和版本了</p>
+</li>
+<li><p>发布</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">apply plugin： <span class="string">'maven-public'</span> <span class="comment">//发布插件</span></span><br><span class="line">publishing&#123;</span><br><span class="line">    publications &#123;</span><br><span class="line">        <span class="comment">// 定义函数名称，然后发布执行</span></span><br><span class="line">        myPublish(MavenPublication)&#123;</span><br><span class="line">            from components.java</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    repositories&#123;</span><br><span class="line">        maven&#123;</span><br><span class="line">            <span class="comment">// 发布的名称和地址</span></span><br><span class="line"><span class="symbol">            name:</span> <span class="string">"myrepo"</span></span><br><span class="line"><span class="symbol">            url:</span> <span class="string">"</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<!-- 如果子集引用了私人的仓库，在最外层的项目中需要配置仓库地址，即使子集已经配置了。 -->
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gradle/" rel="tag"># gradle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/udp，tcp，http一些了解/" rel="next" title="UDP,TCP,HTTP一些了解">
+                <i class="fa fa-chevron-left"></i> UDP,TCP,HTTP一些了解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/gradle/groovy笔记/" rel="prev" title="groovy学习">
+                groovy学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thdqn</p>
+              <div class="site-description motion-element" itemprop="description">thdqn的博客,个人技术笔记</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/yexiang1994" title="GitHub &rarr; https://github.com/yexiang1994" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" title="QQ &rarr; tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.web-jackiee.com/" title="http://www.web-jackiee.com/" rel="noopener" target="_blank">老牛的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xuanmo.xin/" title="https://www.xuanmo.xin/" rel="noopener" target="_blank">轩陌的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thdqn</span>
+
+  
+
+  
+</div>
+
+
+  <span class="author" itemprop="copyrightHolder">认准一件事需要坚持，不抛弃不放弃，加油!</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="位运算符java种的运算符有 “&amp;amp;”,“|”,“~”,“^”即 “与”、“非”、“或”、“异或” 这几种运算符都需要将判断的字符转换成2进制， &amp;amp; 且运算符两个操作数中位数都为1，结果才为1，否则为0如 int a = 9;int b = 10;9的二进制是1001，10是1010，&amp;amp;的结果是1000 即8 | 或运算符两个位数只要一个为1，结果就是1，否则为0如 int">
+<meta name="keywords" content="java基础知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础知识">
+<meta property="og:url" content="http://thdqn.cn/2019/09/04/java/java基础知识/index.html">
+<meta property="og:site_name" content="thdqn">
+<meta property="og:description" content="位运算符java种的运算符有 “&amp;amp;”,“|”,“~”,“^”即 “与”、“非”、“或”、“异或” 这几种运算符都需要将判断的字符转换成2进制， &amp;amp; 且运算符两个操作数中位数都为1，结果才为1，否则为0如 int a = 9;int b = 10;9的二进制是1001，10是1010，&amp;amp;的结果是1000 即8 | 或运算符两个位数只要一个为1，结果就是1，否则为0如 int">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-22T06:34:39.453Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java基础知识">
+<meta name="twitter:description" content="位运算符java种的运算符有 “&amp;amp;”,“|”,“~”,“^”即 “与”、“非”、“或”、“异或” 这几种运算符都需要将判断的字符转换成2进制， &amp;amp; 且运算符两个操作数中位数都为1，结果才为1，否则为0如 int a = 9;int b = 10;9的二进制是1001，10是1010，&amp;amp;的结果是1000 即8 | 或运算符两个位数只要一个为1，结果就是1，否则为0如 int">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://thdqn.cn/2019/09/04/java/java基础知识/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>java基础知识 | thdqn</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thdqn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">thdqn技术博客</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://thdqn.cn/2019/09/04/java/java基础知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thdqn">
+      <meta itemprop="description" content="thdqn的博客,个人技术笔记">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thdqn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java基础知识
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 14:37:55" itemprop="dateCreated datePublished" datetime="2019-09-04T14:37:55+08:00">2019-09-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-22 14:34:39" itemprop="dateModified" datetime="2019-04-22T14:34:39+08:00">2019-04-22</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><p>java种的运算符有 “&amp;”,“|”,“~”,“^”即 “与”、“非”、“或”、“异或”</p>
+<p>这几种运算符都需要将判断的字符转换成2进制，</p>
+<h3 id="amp-且运算符"><a href="#amp-且运算符" class="headerlink" title="&amp; 且运算符"></a>&amp; 且运算符</h3><p>两个操作数中位数都为1，结果才为1，否则为0<br>如 int a = 9;<br>int b = 10;<br>9的二进制是1001，10是1010，&amp;的结果是1000 即8</p>
+<h3 id="或运算符"><a href="#或运算符" class="headerlink" title="| 或运算符"></a>| 或运算符</h3><p>两个位数只要一个为1，结果就是1，否则为0<br>如 int a = 9;<br>int b = 10;<br>9的二进制是1001，10是1010，|的结果是1011 即11</p>
+<h3 id="非运算符"><a href="#非运算符" class="headerlink" title="~ 非运算符"></a>~ 非运算符</h3><p>如果位数为0，结果是1，如果位数为1，结果是0<br>如 int a = 9;<br>9的二进制是1001，~的结果是0110 即6</p>
+<h3 id="异或运算符"><a href="#异或运算符" class="headerlink" title="^ 异或运算符"></a>^ 异或运算符</h3><p>相对应的位 相同则结果为0，不同则结果为1<br>如 int a = 9;<br>int b = 10;<br>9的二进制是1001，10是1010，^的结果是0011 即3</p>
+<h3 id="lt-lt-按位左移运算符"><a href="#lt-lt-按位左移运算符" class="headerlink" title="&lt;&lt; 按位左移运算符"></a>&lt;&lt; 按位左移运算符</h3><p>左操作数按位左移右操作数指定的位数。<br>如 20 &lt;&lt; 2<br>20的二进制补码：0001 0100</p>
+<h3 id="gt-gt-按位右移运算符"><a href="#gt-gt-按位右移运算符" class="headerlink" title="&gt;&gt; 按位右移运算符"></a>&gt;&gt; 按位右移运算符</h3><p>左操作数按位右移右操作数指定的位数。</p>
+<h2 id="一些基础概念"><a href="#一些基础概念" class="headerlink" title="一些基础概念"></a>一些基础概念</h2><h3 id="机器数"><a href="#机器数" class="headerlink" title="机器数"></a>机器数</h3><p>一个数在计算机中的二进制表示形式，叫做这个数的机器数，机器数是带符号的，在计算机用一个数的最高位存放符号, 正数为0, 负数为1<br>如 1的二进制数计算机字长位8位，二进制就是 0000 0001 ， -1就是 1000 0001</p>
+<h3 id="真值"><a href="#真值" class="headerlink" title="真值"></a>真值</h3><p>因为第一位是符号位，所以机器数的形式值就不等于真正的数值。例如上面的有符号数 1000 0001，其最高位1代表负，其真正数值是 -1 而不是形式值129（1000 0001转换成十进制等于129）。所以，为区别起见，将带符号位的机器数对应的真正数值称为机器数的真值。<br>所以 0000 0001 的真值为 +000 0001 即 1<br>    1000 0001 的真值为 -000 0001 即 -1</p>
+<h3 id="原码"><a href="#原码" class="headerlink" title="原码"></a>原码</h3><p>原码就是符号位加上真值的绝对值, 即用第一位表示符号, 其余位表示值. 比如如果是8位二进制:<br>1的原码 0000 0001<br>-1的原码 1000 0001<br>8位二进制的取值范围则是[1111 1111, 0111 1111] 即 [-127, 127]</p>
+<h3 id="反码"><a href="#反码" class="headerlink" title="反码"></a>反码</h3><p>反码就是将原码除符号位以外的值全部取反，原来是1的变为0，原来是0的变为1<br>正数的反码是其本身<br>如1的原码是： 0000 0001<br>反码是：      0000 0001</p>
+<p>如-1的原码是： 1000 0001<br>反码是：      1111 1110</p>
+<h3 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h3><p>补码就是在反码的基础上，在二进制数的右端末位加1(逢2进1)<br>正数的补码就是其本身<br>如1的原码是： 0000 0001<br>反码是：      0111 1110<br>补码是：      0000 0001</p>
+<p>如-1的原码是： 1000 0001<br>反码是：      1111 1110<br>补码是：      1111 1111</p>
+<p><a href="http://www.cnblogs.com/zhangziqiu/archive/2011/03/30/ComputerCode.html" target="_blank" rel="noopener">参考连接</a></p>
+<h3 id="移位运算"><a href="#移位运算" class="headerlink" title="移位运算"></a>移位运算</h3><h4 id="左移"><a href="#左移" class="headerlink" title="左移"></a>左移</h4><p>数值的补码全部往左移动X位，符号位和最高位都舍弃，最低位补0<br>如 int a = 6;<br>int b = a &lt;&lt; 2;<br>6的补码： [0000 0000 0000 0000 0000 0000 0000 0110]<br>结果：    [0000 0000 0000 0000 0000 0000 0001 1000] 即24</p>
+<p>int a = -6;<br>int b = a &lt;&lt; -6<br>-6的原码： [1000 0000 0000 0000 0000 0000 0000 0110]<br>-6的反码： [1111 1111 1111 1111 1111 1111 1111 1001]<br>-6的补码： [1111 1111 1111 1111 1111 1111 1111 1010]<br>-6的左移动2位： [1111 1111 1111 1111 1111 1111 1110 1000]<br>然后将补码转成原码： 先补码的反码再加1<br>即 [1000 0000 0000 0000 0000 0000 0001 0111] =》 [1000 0000 0000 0000 0000 0000 0001 1000]<br>结果为 -24<br>左移n位就相当于乘以2的n次方</p>
+<h4 id="右移"><a href="#右移" class="headerlink" title="右移"></a>右移</h4><p>数值的补码向右移X位，符号位不变（左边补上符号位）<br>int a=8<br>int b=a&gt;&gt; 2<br>8的原码 [0000 0000 0000 0000 0000 0000 0000 1000]<br>8向右移动两位 [0000 0000 0000 0000 0000 0000 0000 0010]<br>结果为 2</p>
+<p>int a=-8<br>int b=a&gt;&gt; 2<br>-8的原码 [0000 0000 0000 0000 0000 0000 0000 1000]<br>-8的反码 [1111 1111 1111 1111 1111 1111 1111 0111]<br>-8的补码 [1111 1111 1111 1111 1111 1111 1111 1000]<br>-8向右移动两位 [1111 1111 1111 1111 1111 1111 1111 1110]<br>然后取补码的反码 [1000 0000 0000 0000 0000 0000 0000 0001]<br>补码的原码 [1000 0000 0000 0000 0000 0000 0000 0010]<br>结果为 -2</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java基础知识/" rel="tag"># java基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/java/java list去重/" rel="next" title="java list去重">
+                <i class="fa fa-chevron-left"></i> java list去重
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/java/java的类和JSON之间的转换/" rel="prev" title="java的类和JSON之间的转换">
+                java的类和JSON之间的转换 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thdqn</p>
+              <div class="site-description motion-element" itemprop="description">thdqn的博客,个人技术笔记</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/yexiang1994" title="GitHub &rarr; https://github.com/yexiang1994" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" title="QQ &rarr; tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=962010454&website=www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.web-jackiee.com/" title="http://www.web-jackiee.com/" rel="noopener" target="_blank">老牛的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.xuanmo.xin/" title="https://www.xuanmo.xin/" rel="noopener" target="_blank">轩陌的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#位运算符"><span class="nav-number">1.</span> <span class="nav-text">位运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#amp-且运算符"><span class="nav-number">1.1.</span> <span class="nav-text">&amp; 且运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#或运算符"><span class="nav-number">1.2.</span> <span class="nav-text">| 或运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非运算符"><span class="nav-number">1.3.</span> <span class="nav-text">~ 非运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异或运算符"><span class="nav-number">1.4.</span> <span class="nav-text">^ 异或运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-lt-按位左移运算符"><span class="nav-number">1.5.</span> <span class="nav-text">&lt;&lt; 按位左移运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gt-gt-按位右移运算符"><span class="nav-number">1.6.</span> <span class="nav-text">&gt;&gt; 按位右移运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些基础概念"><span class="nav-number">2.</span> <span class="nav-text">一些基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#机器数"><span class="nav-number">2.1.</span> <span class="nav-text">机器数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#真值"><span class="nav-number">2.2.</span> <span class="nav-text">真值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原码"><span class="nav-number">2.3.</span> <span class="nav-text">原码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反码"><span class="nav-number">2.4.</span> <span class="nav-text">反码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#补码"><span class="nav-number">2.5.</span> <span class="nav-text">补码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移位运算"><span class="nav-number">2.6.</span> <span class="nav-text">移位运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#左移"><span class="nav-number">2.6.1.</span> <span class="nav-text">左移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#右移"><span class="nav-number">2.6.2.</span> <span class="nav-text">右移</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thdqn</span>
+
+  
+
+  
+</div>
+
+
+  <span class="author" itemprop="copyrightHolder">认准一件事需要坚持，不抛弃不放弃，加油!</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
